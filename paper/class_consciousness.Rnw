@@ -245,7 +245,7 @@ missing$county0 <- NULL # drop tempvar
 
 bush04_cnty %<>% rbind(missing) %>% select(fips, perc_bush04)
 
-acs0509 <- read_csv("data/acs0509-counties.csv") # this throws warnings; they are irrelevant
+acs0509 <- read_csv("../data/acs0509-counties.csv") # this throws warnings; they are irrelevant
 names(acs0509) <- tolower(names(acs0509))
 acs0509 <- mutate(acs0509,
 				  fips = as.numeric(gsub("05000US", "", geoid)),
@@ -265,7 +265,7 @@ vars_proper <- c("Gini Index", "Median Household Income", "Percent Black", "Bush
                 "Religious Attendance")
 
 ### 2006 (Table 2)
-hhn06 <- read_dta("data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # Converted first with StatTransfer as read_sav didn't work
+hhn06 <- read_dta("../data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # Converted first with StatTransfer as read_sav didn't work
 hhn06x <- hhn_format(hhn06, cfips="fips", dh="q52", hn="q53")
 
 hhn06x_mi <- hhn_mi(hhn06x) # multiply impute missing data
@@ -282,12 +282,12 @@ dwplot(t2_res)
 <<label=replication>>==
 ### additional data
 # load all datasets
-hhn05 <- read_sav("data/pew/haves_havenots/Oct05NII/Oct05NIIc.sav") # Oct05NII (all controls)
-hhn06 <- read_dta("data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # used in Table 2
-hhn07 <- read_sav("data/pew/haves_havenots/July07/July07c.sav") # July07 (missing labor, employ)
-hhn0801 <- read_dta("data/pew/haves_havenots/Jan08/Jan08c.dta") # Jan08 (all controls)
-hhn0810 <- read_sav("data/pew/haves_havenots/EarlyOct08/EarlyOct08c.sav") # EarlyOct2008 (missing labor, attend)
-hhn09 <- read_sav("data/pew/haves_havenots/Values09/Values09c.sav") %>% # Values09 (all controls, but only Survey B asked hhn)
+hhn05 <- read_sav("../data/pew/haves_havenots/Oct05NII/Oct05NIIc.sav") # Oct05NII (all controls)
+hhn06 <- read_dta("../data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # used in Table 2
+hhn07 <- read_sav("../data/pew/haves_havenots/July07/July07c.sav") # July07 (missing labor, employ)
+hhn0801 <- read_dta("../data/pew/haves_havenots/Jan08/Jan08c.dta") # Jan08 (all controls)
+hhn0810 <- read_sav("../data/pew/haves_havenots/EarlyOct08/EarlyOct08c.sav") # EarlyOct2008 (missing labor, attend)
+hhn09 <- read_sav("../data/pew/haves_havenots/Values09/Values09c.sav") %>% # Values09 (all controls, but only Survey B asked hhn)
     filter(values==2) # keep only Survey B, which asked hhn questions
 
 # no fips in Apr10-political-future;
@@ -331,7 +331,7 @@ p <- t2_res %>% by_2sd(hhn06x) %>%
                       breaks = c("t2", "t2_all"),
                       labels = c("Pew 2006", "Pew 2005-2009"))
 g <- p %>% add_brackets(level_brackets)
-ggsave("figures/t2_pooled.pdf")  
+ggsave("figures/t2_pooled.pdf", plot = g, width = 6, height = 5)  
 
 
 # Cross-classified model with level for survey makes no difference
@@ -421,6 +421,7 @@ The authors’ use of this severely truncated data has implications beyond the c
   \end{footnotesize}
 \end{figure}
 
+\end{spacing}
 
 \clearpage
 \pagebreak
