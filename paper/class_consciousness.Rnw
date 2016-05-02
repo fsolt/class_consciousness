@@ -276,10 +276,10 @@ t2 <- with(hhn06x_mi,
                         income+educ+age+male+union+emp+partyid+ideo+attend+
                         (1|fips), family=binomial(link="logit")))
 t2_res <- format_mi_results(t2)
-dwplot(t2_res)
+#dwplot(t2_res)
 @
 
-<<label=replication>>==
+<<label=replication_all>>==
 ### additional data
 # load all datasets
 hhn05 <- read_sav("../data/pew/haves_havenots/Oct05NII/Oct05NIIc.sav") # Oct05NII (all controls)
@@ -332,29 +332,9 @@ p <- t2_res %>% by_2sd(hhn06x) %>%
                       labels = c("Pew 2006", "Pew 2005-2009"))
 g <- p %>% add_brackets(level_brackets)
 ggsave("figures/t2_pooled.pdf", plot = g, width = 6, height = 5)  
+@
 
-
-# Cross-classified model with level for survey makes no difference
-# t2_all2 <- with(hhn_mi, 
-#                glmer(formula = div_hhn~gini_cnty+
-#                          income_cnty+black_cnty+perc_bush04+pop_cnty+
-#                          income+educ+age+male+union+emp+partyid+ideo+attend+
-#                          (1|fips) + (1|survey), family=binomial(link="logit")))
-# t2_all2_res <- format_mi_results(t2_all2)
-# summary(t2_all2_res)
-# beep()
-
-# No sign of interaction either: gini_cnty not significant at any income
-# t2_all3 <- with(hhn_mi, 
-#                 glmer(formula = div_hhn~gini_cnty+
-#                           income_cnty+black_cnty+perc_bush04+pop_cnty+
-#                           income+educ+age+male+union+emp+partyid+ideo+attend+gini_cnty:income +
-#                           (1|fips) + (1|survey), family=binomial(link="logit")))
-# t2_all3_res <- format_mi_results(t2_all3)
-# summary(t2_all3_res)
-# interplot(t2_all3, "gini_cnty", "income")
-# beep()
-
+<<label=replication_each>>==
 # Does any other single dataset yield same result as 2006? no
 yrs <- c(2005, 2007, 200801, 200810, 2009)
 
@@ -369,17 +349,19 @@ for (i in 1:length(yrs)) {
     tidy_res$model <- paste("Pew", yrs[i])
     if (i==1) t2_by_survey <- tidy_res else t2_by_survey <- rbind(t2_by_survey, tidy_res)
 }
+@
 
+<<label = replication_each_plot>>==
 t2_by_survey %<>% rbind(t2_res %>% mutate(model = "Pew 2006")) %>% 
 	arrange(model) # use 2006 data mi'd separately for consistency w first plot
 
-secret_weapon(t2_by_survey, "gini_cnty") +
+sw <- secret_weapon(t2_by_survey, "gini_cnty") +
     theme_bw() + xlab("Coefficient Estimate, County Gini Index") + ylab("") + 
     relabel_y_axis(c("Oct 2005", "Sept 2006", "July 2007", 
                                             "Jan 2008", "Oct 2008", "Apr 2009")) +
     geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + 
     theme(legend.position = "none")
-ggsave("figures/t2_by_survey.pdf", width = 6, height = 3)
+ggsave("figures/t2_by_survey.pdf", plot = sw, width = 6, height = 3)
 @
 
 examine as much relevant evidence as possible
@@ -422,6 +404,30 @@ The authors’ use of this severely truncated data has implications beyond the c
 \end{figure}
 
 \end{spacing}
+
+
+<<label = additional_analyses>>==
+# Cross-classified model with level for survey makes no difference
+# t2_all2 <- with(hhn_mi, 
+#                glmer(formula = div_hhn~gini_cnty+
+#                          income_cnty+black_cnty+perc_bush04+pop_cnty+
+#                          income+educ+age+male+union+emp+partyid+ideo+attend+
+#                          (1|fips) + (1|survey), family=binomial(link="logit")))
+# t2_all2_res <- format_mi_results(t2_all2)
+# summary(t2_all2_res)
+# beep()
+
+# No sign of interaction either: gini_cnty not significant at any income
+# t2_all3 <- with(hhn_mi, 
+#                 glmer(formula = div_hhn~gini_cnty+
+#                           income_cnty+black_cnty+perc_bush04+pop_cnty+
+#                           income+educ+age+male+union+emp+partyid+ideo+attend+gini_cnty:income +
+#                           (1|fips) + (1|survey), family=binomial(link="logit")))
+# t2_all3_res <- format_mi_results(t2_all3)
+# summary(t2_all3_res)
+# interplot(t2_all3, "gini_cnty", "income")
+# beep()
+@
 
 \clearpage
 \pagebreak
