@@ -1,1 +1,1 @@
-# class_consciousness
+# Economic Inequality and Class Consciousness in the United States
