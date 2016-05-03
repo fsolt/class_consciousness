@@ -364,6 +364,66 @@ sw <- secret_weapon(t2_by_survey, "gini_cnty") +
 ggsave("figures/t2_by_survey.pdf", plot = sw, width = 6, height = 3)
 @
 
+
+<<label = t3_replication>>==
+
+t3_all <- with(hhn_mi, 
+              glmer(formula = have_not~gini_cnty+income+gini_cnty:income+
+                        income_cnty+black_cnty+perc_bush04+pop_cnty+
+                        educ+age+male+union+emp+partyid+ideo+attend+
+                        (1+income|fips), family=binomial(link="logit")))
+t3_all_res <- format_mi_results(t3_all)
+
+# Table 3 isn't reproducible as presented: it has more parameters than observations
+# so we have to enter the reported results by hand
+t3_rep <- data_frame(term = t3_all_res$term,
+               estimate = c(2.27, -1.76, .625, -.082, 1.95, 1.09, -.679, -1.76, .156, .274,
+                            .358, -1.49, -.538, -.058, -4.59),
+               std.error = c(1.50, 1.05, .677, .632, .661, .835, .361, 1.05, .170, .235,
+                             .205, .274, .401, .273, 2.62),
+               model = "t3")
+
+t3_adj <- hhn06x %>% 
+  summarize_each(funs(min(., na.rm=TRUE), max(., na.rm=TRUE)))
+t3_adj <- tidyr::gather(t3_adj, key = term, value = val)
+
+t3_adj_max <- t3_adj %>% 
+  filter(str_detect(term, "_max")) %>% 
+  transmute(term = str_replace(term, "_max", ""),
+            max = val) 
+
+t3_adj_min <- t3_adj %>% 
+  filter(str_detect(term, "_min")) %>% 
+  transmute(term = str_replace(term, "_min", ""),
+            min = val)
+
+t3_rep %<>% left_join(t3_adj_max, by = "term") %>% left_join(t3_adj_min, by = "term")
+
+#make adjustment
+
+
+level_brackets <- list(c("County-Level Controls", "income_cnty", "pop_cnty"),
+                       c("Individual-Level Controls", "educ", "attend"))
+
+p3 <-  t3_rep %>% 
+  rbind(t3_all_res %>% by_2sd(hhn)) %>% 
+  dwplot() +
+    relabel_y_axis(vars_proper) +
+    theme_bw() + xlab("Coefficient Estimate") +
+    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+    theme(legend.justification=c(0, 1), legend.position=c(0, 1),
+          legend.background = element_rect(colour="grey80"),
+          legend.title.align = .5) +
+    scale_colour_grey(start = .5, end = .7,
+                      name = "Dataset",
+                      breaks = c("t3", "t3_all"),
+                      labels = c("Pew 2006, Reported", "Pew 2005-2009"))
+
+g3 <- p3 %>% add_brackets(level_brackets)
+ggsave("figures/t3_pooled.pdf", plot = g, width = 6, height = 5)
+@
+
+
 examine as much relevant evidence as possible
 
 discuss Figure \ref{F:t2_pooled}
