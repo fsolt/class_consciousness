@@ -38,7 +38,7 @@
 
 \begin{document}
 
-<<include=FALSE>>=
+<<label=preamble, include=FALSE>>=
 library(knitr)
 opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=FALSE, results='hide')
 @
@@ -75,7 +75,6 @@ opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=
 library(readr)
 library(haven)
 library(ggplot2)
-library(dplyr)
 library(magrittr)
 library(stringr)
 library(lme4)
@@ -86,6 +85,7 @@ library(mitools)
 library(beepr)
 devtools::install_github("fsolt/dotwhisker") # until CRAN updated with new by_2sd fxn
 library(dotwhisker)
+library(dplyr)
 @
 
 
@@ -354,7 +354,7 @@ for (i in 1:length(yrs)) {
 }
 @
 
-<<label = t2_replication_each_plot>>==
+<<label=t2_replication_plot>>==
 t2_by_survey %<>% rbind(t2_res %>% mutate(model = "Pew 2006")) %>% 
 	arrange(model) # use 2006 data mi'd separately for consistency w first plot
 
@@ -369,7 +369,7 @@ ggsave("figures/t2_by_survey.pdf", plot = sw, width = 6, height = 3)
 @
 
 
-<<label = t3_replication>>==
+<<label=t3_replication>>==
 vars_list_t3 <- c("gini_cnty", "income", "gini_cnty:income", "income_cnty",
                   "black_cnty", "perc_bush04", "pop_cnty",
                   "educ", "age", "male", "union", "emp", "partyid", "ideo", "attend")
@@ -382,10 +382,10 @@ t3_all_res <- format_mi_results(t3_all)
 t3_all_res <- t3_all_res[match(vars_list_t3, t3_all_res$term),]
 @
 
-<<t3_replication_plot>>==
+<<label=t3_plot>>==
 # Table 3 isn't reproducible as presented: it has more parameters than observations
 # so we have to enter the reported results by hand
-t3_data <- read_tsv("data/study_26584/Meritocracy Replication Data - Table 3.tab")
+t3_data <- read_tsv("../data/study_26584/Meritocracy Replication Data - Table 3.tab")
 t3_rep <- data_frame(term = c("ginicnty", "income_i", "ginicnty:income_i", "income_cnty",
                               "black_cnty", "perc_bush04", "pop_cnty", 
                               "educ_i", "age_i", "gender_i", "union_i",
@@ -429,6 +429,154 @@ g3 <- p3 %>% add_brackets(level_brackets)
 ggsave("figures/t3_pooled.pdf", plot = g3, width = 6, height = 5)
 @
 
+<<label=t3_inter_gini>>==
+inc_labels <- c("<$10k", "$10-20k", "$20-30k", "$30-40k", "$40-50k",
+                "$50-75k", "$75-100k", "$100-150k", ">$150k")
+t3_inter_gini <- interplot(t3_all, "gini_cnty", "income") +
+  scale_x_continuous(breaks = seq(length(inc_labels)), labels = inc_labels) + 
+  coord_cartesian(ylim = c(-10, 5)) +
+  labs(x = "Income", y = "Coefficient of Income Inequality on Identifying as a 'Have-Not'") +
+  theme_bw() +
+  geom_hline(yintercept = 0, colour = "grey80", linetype = "dashed") +
+  scale_colour_grey(start = .5)
+
+ggsave(filename="figures/t3_inter_gini.pdf", plot = t3_inter_gini, width = 7, height = 7)
+@
+
+<<label=t3_inter_inc>>==
+t3_inter_inc <- interplot(t3_all, "income", "gini_cnty") +
+  coord_cartesian(xlim = c(0.3, 0.6)) +
+  labs(x = "Income Inequality", y = "Coefficient of Income on Identifying as a 'Have-Not'") +
+  theme_bw() 
+ggsave(filename="figures/t3_inter_inc.pdf", plot = t3_inter_inc, width = 7, height = 7)
+@
+
+<<label=t3_predprob, include=FALSE>>==
+pred_probs <- function(m, var1, var2, var2_vals,
+                       times = 20, sims = 1000) {
+  m_list <- m
+  m <- m_list[[1]]
+  class(m_list) <- class(m)
+  m_sims_list <- lapply(m_list, function(i) arm::sim(i, sims))
+  m_sims <- m_sims_list[[1]]
+  
+  for (i in 2:length(m_sims_list)) {
+    m_sims@fixef <- rbind(m_sims@fixef, m_sims_list[[i]]@fixef)
+    m_sims@ranef[[1]] <- abind::abind(m_sims@ranef[[1]], m_sims_list[[i]]@ranef[[1]], along = 1)
+  }
+  
+  df <- data.frame(m@frame)
+  df[[names(m@flist)]] <- NULL # omit L2 var
+  names(df)[1] <- "(Intercept)" # replace DV with intercept
+  df$`(Intercept)` <- 1
+  
+  # Find name of interaction term
+  ifelse(var1 == var2, var12 <- paste0("I(", var1, "^2)"), 
+         var12 <- paste0(var2, ":", var1))
+  if (!var12 %in% unlist(dimnames(m@pp$X)[2])) 
+    var12 <- paste0(var1, ":", var2)
+  if (!var12 %in% unlist(dimnames(m@pp$X)[2])) 
+    stop(paste("Model does not include the interaction of", var1, "and", 
+               var2, "."))
+  
+  iv_medians <- summarize_each(df, funs(median(., na.rm = TRUE))) 
+
+  fake_data <- iv_medians[rep(1:nrow(iv_medians), each=times*length(var2_vals)), ] 
+  fake_data[[var1]] <- with(df, rep(seq(min(get(var1)), max(get(var1)), length.out=times),
+                                    times=length(var2_vals)))
+  fake_data[[var2]] <- rep(var2_vals, each=times)
+  fake_data[[var12]] <- fake_data[[var1]] * fake_data[[var2]]
+
+  pp <- rowMeans(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef))))
+  row_quantiles <- function (x, probs) {
+    naValue <- NA
+    storage.mode(naValue) <- storage.mode(x)
+    nrow <- nrow(x)
+    q <- matrix(naValue, nrow = nrow, ncol = length(probs))
+    if (nrow > 0L) {
+      t <- quantile(x[1L, ], probs = probs)
+      colnames(q) <- names(t)
+      q[1L, ] <- t
+      if (nrow >= 2L) {
+        for (rr in 2:nrow) {
+          q[rr, ] <- quantile(x[rr, ], probs = probs)
+        }
+      }
+    }
+    else {
+      t <- quantile(0, probs = probs)
+      colnames(q) <- names(t)
+    }
+    q <- drop(q)
+    q
+  }
+  pp_bounds <- row_quantiles(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef))), prob = c(.025, .975))
+  pp <- cbind(pp, pp_bounds)
+  pp <- pp*100
+  colnames(pp) <- c("est", "lb", "ub")
+  pp <- cbind(fake_data, pp)
+  pp$income <- as.factor(pp$income)
+  return(pp)
+}
+
+t3_pp <- pred_probs(t3_all, var1 = "gini_cnty", var2 = "income", 
+                    var2_vals = c(1, 6, 9), times = 50, sims = 1000)
+
+t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) + 
+  geom_line(aes(colour = income)) + 
+  geom_ribbon(aes(ymin=lb, ymax=ub, fill = income), alpha=.45) +
+  xlab("Income Inequality") + ylab("Probability of Identifying as a 'Have-Not'") +
+  theme_bw() + theme(legend.position="none") +
+  theme(plot.title = element_text(face="bold")) +
+  geom_text(aes(.37, 79, label="<$10k", color="1")) +
+  geom_text(aes(.42, 33, label="$50-75k", color="6")) +
+  geom_text(aes(.55, 2, label=">$150k", color="9")) +
+  scale_colour_manual(values = c("grey60", "grey40", "grey5")) +
+  scale_fill_manual(values = c("grey60", "grey40", "grey5"))
+ggsave("figures/t3_pp_plot.pdf", plot = t3_pp_plot, width = 7, height = 7)
+@
+
+<<label=t3_multi>>==
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+    require(grid)
+    
+    # Make a list from the ... arguments and plotlist
+    plots <- c(list(...), plotlist)
+    
+    numPlots = length(plots)
+    
+    # If layout is NULL, then use 'cols' to determine layout
+    if (is.null(layout)) {
+        # Make the panel
+        # ncol: Number of columns of plots
+        # nrow: Number of rows needed, calculated from # of cols
+        layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                         ncol = cols, nrow = ceiling(numPlots/cols))
+    }
+    
+    if (numPlots==1) {
+        print(plots[[1]])
+        
+    } else {
+        # Set up the page
+        grid.newpage()
+        pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+        
+        # Make each plot, in the correct location
+        for (i in 1:numPlots) {
+            # Get the i,j matrix positions of the regions that contain this subplot
+            matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+            
+            print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                            layout.pos.col = matchidx$col))
+        }
+    }
+}
+
+pdf(file="figures/t3_multi.pdf", width=8, height=5.25)
+multiplot(t3_inter_gini, t3_inter_inc, t3_pp_plot, layout = matrix(c(1, 2, 3), nrow=1))
+graphics.off()
+@
 
 examine as much relevant evidence as possible
 
@@ -486,7 +634,7 @@ The authors’ use of this severely truncated data has implications beyond the c
 \end{spacing}
 
 
-<<label = additional_analyses>>==
+<<label=additional_analyses>>==
 # Cross-classified model with level for survey makes no difference
 # t2_all2 <- with(hhn_mi, 
 #                glmer(formula = div_hhn~gini_cnty+
