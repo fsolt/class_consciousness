@@ -432,7 +432,8 @@ t3_inter_gini <- interplot(t3_all, "gini_cnty", "income") +
   labs(x = "Income", 
        y = "Coefficient of Inequality on Identifying as a 'Have-Not'") +
   theme_bw() +
-  theme(axis.text.x  = element_text(angle=90, vjust=0.5, size=8)) +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5, size=8),
+        axis.title.y = element_text(size=8)) +
   geom_hline(yintercept = 0, colour = "grey80", linetype = "dashed") +
   scale_colour_grey(start = .5)
 
@@ -447,7 +448,8 @@ t3_inter_inc <- interplot(t3_all, "income", "gini_cnty") +
   coord_cartesian(xlim = c(0.3, 0.6)) +
   labs(x = "Income Inequality", 
        y = "Coefficient of Income on Identifying as a 'Have-Not'") +
-  theme_bw() 
+  theme_bw() +
+  theme(axis.title.y = element_text(size=8))
 
 ggsave(filename="figures/t3_inter_inc.pdf", plot = t3_inter_inc, width = 7, height = 7)
 
@@ -532,11 +534,12 @@ t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) +
   coord_cartesian(xlim = c(0.3, 0.6)) +
   xlab("Income Inequality") + 
   ylab("Predicted Probability of Identifying as a 'Have-Not'") +
-  theme_bw() + theme(legend.position="none") +
+  theme_bw() + theme(legend.position="none",
+        axis.title.y = element_text(size=8)) +
   theme(plot.title = element_text(face="bold")) +
-  geom_text(aes(.39, 79, label="<$10k", color="1")) +
-  geom_text(aes(.46, 43.5, label="$40-50k", color="5")) +
-  geom_text(aes(.55, 2, label=">$150k", color="9")) +
+  geom_text(aes(.40, 79.5, label="<$10k", color="1")) +
+  geom_text(aes(.46, 44, label="$40-50k", color="5")) +
+  geom_text(aes(.52, 2, label=">$150k", color="9")) +
   scale_colour_manual(values = c("grey60", "grey40", "grey5")) +
   scale_fill_manual(values = c("grey60", "grey40", "grey5"))
 ggsave("figures/t3_pp_plot.pdf", plot = t3_pp_plot, width = 7, height = 7)
@@ -582,7 +585,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 load("cache/t3_inter_inc.RData") # naive cache for lazyLoad() bug
 load("cache/t3_inter_gini.RData") # naive cache for lazyLoad() bug
 
-pdf(file="figures/t3_multi.pdf", width=8, height=4)
+pdf(file="figures/t3_multi.pdf", width=8, height=3.5)
 multiplot(t3_inter_inc, t3_inter_gini, t3_pp_plot, layout = matrix(c(1, 2, 3), nrow=1))
 graphics.off()
 
@@ -613,7 +616,9 @@ This provides a clear illustration of the importance of including all relevant d
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals. Results from replications of the model presented in Table 2 of \citet{Newman2015} on the 2006 Pew survey analyzed in that article and on pooled data from the six Pew surveys that included the same item and were conducted in the time period the article examines.  The statistically significant result for county income inequality in the 2006 survey presented in that article is not evident when all of the available data are examined.
+  & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals. 
+Results from replications of the model presented in Table 2 of \citet{Newman2015} on the 2006 Pew survey analyzed in that article and on pooled data from the six Pew surveys that included the same item and were conducted in the time period the article examines.
+The statistically significant result for county income inequality in the 2006 survey presented in that article is not evident when all of the available data are examined.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -628,7 +633,7 @@ Additionally, union membership gains statistical significance, indicating that b
 Ultimately, Figure~\ref{F:t2_pooled} provides graphical representation of the dangers of not including all available data. 
 By limiting their analysis to the sole dataset that produced a statistically significant coefficient for inequality, the authors have disguised the true relationship in order to support their theory. 
 A properly crafted analysis reveals findings that are far less surprising; the wealthy are less likely to see America as divided into the haves and have-nots, while union members are more likely to do so. 
-These findings counter the primary argument advanced by Newman et al, and lend strong evidence to the claim that ``we should be willing to take whatever information we can acquire so long as it helps us learn about the veracity of our theory,'' while illustrating the pitfall of picking and choosing data that confirm our theory, while ignoring data that does not \citep[31]{King1994}.
+These findings counter the primary argument advanced by NJL, and lend strong evidence to the claim that ``we should be willing to take whatever information we can acquire so long as it helps us learn about the veracity of our theory,'' while illustrating the pitfall of picking and choosing data that confirm our theory, while ignoring data that does not \citep[31]{King1994}.
 
 
 
@@ -641,7 +646,9 @@ These findings counter the primary argument advanced by Newman et al, and lend s
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals.  Results for county income inequality from replications of the model presented in NJL Table 2 on data from each of six available surveys conducted in the in the time period examined in that article.  Of the six surveys, the only one that yields a statistically significant result is the 2006 survey presented in the article.
+  & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals.  
+Results for county income inequality from replications of the model presented in NJL Table 2 on data from each of six available surveys conducted in the in the time period examined in that article.  
+Of the six surveys, the only one that yields a statistically significant result is the 2006 survey presented in the article.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -654,7 +661,9 @@ These findings counter the primary argument advanced by Newman et al, and lend s
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.  Results obtained by replicating the analysis from NJL Table 3 on pooled data from the six Pew surveys that included the same item conducted in the time period examined in that article.  The published NJL analysis, purportedly of the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  
+  & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.
+Results obtained by replicating the analysis from NJL Table 3 on pooled data from the six Pew surveys that included the same item conducted in the time period examined in that article.
+The published NJL analysis, purportedly of the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -663,11 +672,13 @@ These findings counter the primary argument advanced by Newman et al, and lend s
   \caption{Conditional Effects of Income and Local Inequality on Self-Identification as a `Have-Not'}
   \label{F:t3_multi}
   \begin{center}
-    \includegraphics[width=5.25in]{figures/t3_multi.pdf}
+    \includegraphics[width=5.9in]{figures/t3_multi.pdf}
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots and solid lines indicate estimates; whiskers and shaded regions represent 95\% confidence intervals.  Replicating the analysis from NJL Table 3 using pooled data from the six Pew surveys that included the same item conducted in the time period examined in that article yields no support for the article's conclusion that lower income people are more likely to identify as have-nots when they live in contexts of greater income inequality.
+  & \emph{Notes}: Dots and solid lines indicate estimates; whiskers and shaded regions represent 95\% confidence intervals.
+Income is estimated to have a negative effect on identifying as a have-not that is strong, statistically significant, and larger in magnitude as local income inequality increases.
+There is no support, however, for the conclusion reached in NJL that lower income people are more likely to identify as have-nots when they live in contexts of greater income inequality.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
