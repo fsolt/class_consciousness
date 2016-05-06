@@ -422,7 +422,7 @@ g3 <- p3 %>% add_brackets(level_brackets)
 ggsave("figures/t3_pooled.pdf", plot = g3, width = 6, height = 5)
 @
 
-<<label=t3_inter_gini, cache=FALSE>>==
+<<label=t3_inter_gini>>==
 p_load(interplot)
 inc_labels <- c("<$10k", "$10-20k", "$20-30k", "$30-40k", "$40-50k",
                 "$50-75k", "$75-100k", "$100-150k", ">$150k")
@@ -437,15 +437,22 @@ t3_inter_gini <- interplot(t3_all, "gini_cnty", "income") +
   scale_colour_grey(start = .5)
 
 ggsave(filename="figures/t3_inter_gini.pdf", plot = t3_inter_gini, width = 7, height = 7)
+
+save(t3_inter_gini, file = 'cache/t3_inter_gini.RData') #naive cache, per https://groups.google.com/forum/#!topic/knitr/3mPn2neMdrk, to cope with lazyLoad() error
+rm(t3_inter_gini) 
 @
 
-<<label=t3_inter_inc, cache=FALSE>>==
+<<label=t3_inter_inc>>==
 t3_inter_inc <- interplot(t3_all, "income", "gini_cnty") +
   coord_cartesian(xlim = c(0.3, 0.6)) +
   labs(x = "Income Inequality", 
        y = "Coefficient of Income on Identifying as a 'Have-Not'") +
   theme_bw() 
+
 ggsave(filename="figures/t3_inter_inc.pdf", plot = t3_inter_inc, width = 7, height = 7)
+
+save(t3_inter_inc, file = 'cache/t3_inter_inc.RData') #naive cache, per https://groups.google.com/forum/#!topic/knitr/3mPn2neMdrk, to cope with lazyLoad() error
+rm(t3_inter_inc) 
 @
 
 <<label=t3_predprob>>==
@@ -517,17 +524,18 @@ pred_probs <- function(m, var1, var2, var2_vals,
 }
 
 t3_pp <- pred_probs(t3_all, var1 = "gini_cnty", var2 = "income", 
-                    var2_vals = c(1, 6, 9), times = 50, sims = 1000)
+                    var2_vals = c(1, 5, 9), times = 50, sims = 1000)
 
 t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) + 
   geom_line(aes(colour = income)) + 
   geom_ribbon(aes(ymin=lb, ymax=ub, fill = income), alpha=.45) +
+  coord_cartesian(xlim = c(0.3, 0.6)) +
   xlab("Income Inequality") + 
   ylab("Predicted Probability of Identifying as a 'Have-Not'") +
   theme_bw() + theme(legend.position="none") +
   theme(plot.title = element_text(face="bold")) +
   geom_text(aes(.39, 79, label="<$10k", color="1")) +
-  geom_text(aes(.46, 35, label="$50-75k", color="6")) +
+  geom_text(aes(.46, 43.5, label="$40-50k", color="5")) +
   geom_text(aes(.55, 2, label=">$150k", color="9")) +
   scale_colour_manual(values = c("grey60", "grey40", "grey5")) +
   scale_fill_manual(values = c("grey60", "grey40", "grey5"))
@@ -571,9 +579,14 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
     }
 }
 
+load("cache/t3_inter_inc.RData") # naive cache for lazyLoad() bug
+load("cache/t3_inter_gini.RData") # naive cache for lazyLoad() bug
+
 pdf(file="figures/t3_multi.pdf", width=8, height=5.25)
 multiplot(t3_inter_inc, t3_inter_gini, t3_pp_plot, layout = matrix(c(1, 2, 3), nrow=1))
 graphics.off()
+
+rm(t3_inter_inc, t3_inter_gini) # ditch to close naive cache for lazyLoad() bug
 @
 
 examine as much relevant evidence as possible
@@ -596,7 +609,7 @@ The authors’ use of this severely truncated data has implications beyond the c
     \includegraphics[width=5.25in]{figures/t2_pooled.pdf}
   \end{center}
   \begin{footnotesize}
-  \begin{tabular}{p{.1in} p{5.1in}}
+  \begin{tabular}{p{.1in} p{6.1in}}
   & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals. Results from replications of the model presented in Table 2 of \citet{Newman2015} on the 2006 Pew survey analyzed in that article and on pooled data from the six Pew surveys that included the same item and were conducted in the time period the article examines.  The statistically significant result for county income inequality in the 2006 survey presented in that article is not evident when all of the available data are examined.
   \end{tabular}
   \end{footnotesize}
@@ -609,7 +622,7 @@ The authors’ use of this severely truncated data has implications beyond the c
     \includegraphics[width=5.25in]{figures/t2_by_survey.pdf}
   \end{center}
   \begin{footnotesize}
-  \begin{tabular}{p{.1in} p{5.1in}}
+  \begin{tabular}{p{.1in} p{6.1in}}
   & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals.  Results for county income inequality from replications of the model presented in Table 2 of \citet{Newman2015} on data from each of six available surveys conducted in the in the time period examined in that article.  Of the six surveys, the only one that yields a statistically significant result is the 2006 survey presented in the article.
   \end{tabular}
   \end{footnotesize}
