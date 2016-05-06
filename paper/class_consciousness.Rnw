@@ -438,7 +438,7 @@ t3_inter_gini <- interplot(t3_all, "gini_cnty", "income") +
 
 ggsave(filename="figures/t3_inter_gini.pdf", plot = t3_inter_gini, width = 7, height = 7)
 
-save(t3_inter_gini, file = 'cache/t3_inter_gini.RData') #naive cache, per https://groups.google.com/forum/#!topic/knitr/3mPn2neMdrk, to cope with lazyLoad() error
+save(t3_inter_gini, file = 'cache/t3_inter_gini.RData') # naive cache, per https://groups.google.com/forum/#!topic/knitr/3mPn2neMdrk, to cope with lazyLoad() bug
 rm(t3_inter_gini) 
 @
 
@@ -451,7 +451,7 @@ t3_inter_inc <- interplot(t3_all, "income", "gini_cnty") +
 
 ggsave(filename="figures/t3_inter_inc.pdf", plot = t3_inter_inc, width = 7, height = 7)
 
-save(t3_inter_inc, file = 'cache/t3_inter_inc.RData') #naive cache, per https://groups.google.com/forum/#!topic/knitr/3mPn2neMdrk, to cope with lazyLoad() error
+save(t3_inter_inc, file = 'cache/t3_inter_inc.RData') # naive cache to cope with lazyLoad() bug
 rm(t3_inter_inc) 
 @
 
@@ -582,11 +582,11 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 load("cache/t3_inter_inc.RData") # naive cache for lazyLoad() bug
 load("cache/t3_inter_gini.RData") # naive cache for lazyLoad() bug
 
-pdf(file="figures/t3_multi.pdf", width=8, height=5.25)
+pdf(file="figures/t3_multi.pdf", width=8, height=4)
 multiplot(t3_inter_inc, t3_inter_gini, t3_pp_plot, layout = matrix(c(1, 2, 3), nrow=1))
 graphics.off()
 
-rm(t3_inter_inc, t3_inter_gini) # ditch to close naive cache for lazyLoad() bug
+rm(t3_inter_inc, t3_inter_gini) # discard naively cached objects
 @
 
 
@@ -641,7 +641,7 @@ These findings counter the primary argument advanced by Newman et al, and lend s
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals.  Results for county income inequality from replications of the model presented in Table 2 of \citet{Newman2015} on data from each of six available surveys conducted in the in the time period examined in that article.  Of the six surveys, the only one that yields a statistically significant result is the 2006 survey presented in the article.
+  & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals.  Results for county income inequality from replications of the model presented in NJL Table 2 on data from each of six available surveys conducted in the in the time period examined in that article.  Of the six surveys, the only one that yields a statistically significant result is the 2006 survey presented in the article.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -654,7 +654,7 @@ These findings counter the primary argument advanced by Newman et al, and lend s
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.  The model in Table 3 of \citet{Newman2015}, which purportedly analyzes the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  Estimating the same model on pooled data from the six Pew surveys that included the same item conducted in the time period the article yields no support for the conclusion that lower income people are more likely to identify as have-nots at any observed level of income inequality.
+  & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.  Results obtained by replicating the analysis from NJL Table 3 on pooled data from the six Pew surveys that included the same item conducted in the time period examined in that article.  The published NJL analysis, purportedly of the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -667,7 +667,7 @@ These findings counter the primary argument advanced by Newman et al, and lend s
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.  The model in Table 3 of \citet{Newman2015}, which purportedly analyzes the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  Estimating the same model on pooled data from the six Pew surveys that included the same item conducted in the time period the article yields no support for the conclusion that lower income people are more likely to identify as have-nots at any observed level of income inequality.
+  & \emph{Notes}: Dots and solid lines indicate estimates; whiskers and shaded regions represent 95\% confidence intervals.  Replicating the analysis from NJL Table 3 using pooled data from the six Pew surveys that included the same item conducted in the time period examined in that article yields no support for the article's conclusion that lower income people are more likely to identify as have-nots when they live in contexts of greater income inequality.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
