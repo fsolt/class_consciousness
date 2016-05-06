@@ -39,7 +39,9 @@
 \begin{document}
 
 <<label=preamble, include=FALSE>>=
-library(knitr)
+if (!"pacman" %in% installed.packages()[, "Package"]) install.packages(pacman)
+library(pacman)
+p_load(knitr)
 opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=FALSE, results='hide')
 @
 
@@ -72,20 +74,8 @@ opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=
 
 
 <<label=setup>>==
-library(readr)
-library(haven)
-library(ggplot2)
-library(magrittr)
-library(stringr)
-library(lme4)
-library(mi)
-library(betareg)
-library(truncnorm)
-library(mitools)
-library(beepr)
-devtools::install_github("fsolt/dotwhisker") # until CRAN updated with new by_2sd fxn
-library(dotwhisker)
-library(dplyr)
+p_load(readr, haven, ggplot2, magrittr, stringr, lme4, mi, betareg, truncnorm, mitools, beepr, dplyr)
+p_load_gh("fsolt/dotwhisker") # until CRAN updated with new by_2sd
 @
 
 
@@ -260,10 +250,11 @@ cnty_data <- select(acs0509, fips:pop_cnty) %>% left_join(bush04_cnty)
 <<label=t2_reproduction>>==
 vars_list <- c("gini_cnty", "income_cnty", "black_cnty", "perc_bush04", "pop_cnty", "income",
               "educ", "age", "male", "union", "emp", "partyid", "ideo", "attend", "(Intercept)")
-vars_proper <- c("Gini Index", "Median Household Income", "Percent Black", "Bush Vote", 
-                "Total Population", "Income", "Education", "Age", "Male", "Union Membership",
-                "Employed", "Republican Party ID", "Conservative Ideology",
-                "Religious Attendance")
+vars_proper <- c("Income Inequality", "Median Household Income", "Percent Black", 
+                 "Bush Vote", "Total Population", 
+                 "Income", "Education", "Age", "Male", "Union Membership",
+                 "Employed", "Republican Party ID", "Conservative Ideology",
+                 "Religious Attendance")
 
 ### 2006 (Table 2)
 hhn06 <- read_dta("../data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # Converted first with StatTransfer as read_sav didn't work
@@ -315,7 +306,9 @@ t2_all <- with(hhn_mi,
                         income+educ+age+male+union+emp+partyid+ideo+attend+
                         (1|fips), family=binomial(link="logit")))
 t2_all_res <- format_mi_results(t2_all)
+@
 
+<<label=t2_rep_all_plot>>==
 level_brackets <- list(c("County-Level", "gini_cnty", "pop_cnty"),
                        c("Individual-Level", "income", "attend"))
 
@@ -354,7 +347,7 @@ for (i in 1:length(yrs)) {
 }
 @
 
-<<label=t2_replication_plot>>==
+<<label=t2_rep_each_plot>>==
 t2_by_survey %<>% rbind(t2_res %>% mutate(model = "Pew 2006")) %>% 
 	arrange(model) # use 2006 data mi'd separately for consistency w first plot
 
@@ -403,7 +396,7 @@ t3_rep$term = t3_all_res$term
 level_brackets <- list(c("County-Level Controls", "income_cnty", "pop_cnty"),
                        c("Individual-Level Controls", "educ", "attend"))
 
-vars_proper_t3 <- c("Gini Index", "Income", "Gini x Income",
+vars_proper_t3 <- c("Income Inequality", "Income", "Inequality x Income",
                     "Median Household Income", "Percent Black", "Bush Vote",
                     "Total Population", "Education", "Age", "Male", 
                     "Union Membership", "Employed", "Republican Party ID", 
@@ -429,29 +422,33 @@ g3 <- p3 %>% add_brackets(level_brackets)
 ggsave("figures/t3_pooled.pdf", plot = g3, width = 6, height = 5)
 @
 
-<<label=t3_inter_gini>>==
+<<label=t3_inter_gini, cache=FALSE>>==
+p_load(interplot)
 inc_labels <- c("<$10k", "$10-20k", "$20-30k", "$30-40k", "$40-50k",
                 "$50-75k", "$75-100k", "$100-150k", ">$150k")
 t3_inter_gini <- interplot(t3_all, "gini_cnty", "income") +
   scale_x_continuous(breaks = seq(length(inc_labels)), labels = inc_labels) + 
   coord_cartesian(ylim = c(-10, 5)) +
-  labs(x = "Income", y = "Coefficient of Income Inequality on Identifying as a 'Have-Not'") +
+  labs(x = "Income", 
+       y = "Coefficient of Inequality on Identifying as a 'Have-Not'") +
   theme_bw() +
+  theme(axis.text.x  = element_text(angle=90, vjust=0.5, size=8)) +
   geom_hline(yintercept = 0, colour = "grey80", linetype = "dashed") +
   scale_colour_grey(start = .5)
 
 ggsave(filename="figures/t3_inter_gini.pdf", plot = t3_inter_gini, width = 7, height = 7)
 @
 
-<<label=t3_inter_inc>>==
+<<label=t3_inter_inc, cache=FALSE>>==
 t3_inter_inc <- interplot(t3_all, "income", "gini_cnty") +
   coord_cartesian(xlim = c(0.3, 0.6)) +
-  labs(x = "Income Inequality", y = "Coefficient of Income on Identifying as a 'Have-Not'") +
+  labs(x = "Income Inequality", 
+       y = "Coefficient of Income on Identifying as a 'Have-Not'") +
   theme_bw() 
 ggsave(filename="figures/t3_inter_inc.pdf", plot = t3_inter_inc, width = 7, height = 7)
 @
 
-<<label=t3_predprob, include=FALSE>>==
+<<label=t3_predprob>>==
 pred_probs <- function(m, var1, var2, var2_vals,
                        times = 20, sims = 1000) {
   m_list <- m
@@ -525,18 +522,19 @@ t3_pp <- pred_probs(t3_all, var1 = "gini_cnty", var2 = "income",
 t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) + 
   geom_line(aes(colour = income)) + 
   geom_ribbon(aes(ymin=lb, ymax=ub, fill = income), alpha=.45) +
-  xlab("Income Inequality") + ylab("Probability of Identifying as a 'Have-Not'") +
+  xlab("Income Inequality") + 
+  ylab("Predicted Probability of Identifying as a 'Have-Not'") +
   theme_bw() + theme(legend.position="none") +
   theme(plot.title = element_text(face="bold")) +
-  geom_text(aes(.37, 79, label="<$10k", color="1")) +
-  geom_text(aes(.42, 33, label="$50-75k", color="6")) +
+  geom_text(aes(.39, 79, label="<$10k", color="1")) +
+  geom_text(aes(.46, 35, label="$50-75k", color="6")) +
   geom_text(aes(.55, 2, label=">$150k", color="9")) +
   scale_colour_manual(values = c("grey60", "grey40", "grey5")) +
   scale_fill_manual(values = c("grey60", "grey40", "grey5"))
 ggsave("figures/t3_pp_plot.pdf", plot = t3_pp_plot, width = 7, height = 7)
 @
 
-<<label=t3_multi>>==
+<<label=t3_multi, cache=FALSE>>==
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
     require(grid)
     
@@ -574,7 +572,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 }
 
 pdf(file="figures/t3_multi.pdf", width=8, height=5.25)
-multiplot(t3_inter_gini, t3_inter_inc, t3_pp_plot, layout = matrix(c(1, 2, 3), nrow=1))
+multiplot(t3_inter_inc, t3_inter_gini, t3_pp_plot, layout = matrix(c(1, 2, 3), nrow=1))
 graphics.off()
 @
 
@@ -618,19 +616,30 @@ The authors’ use of this severely truncated data has implications beyond the c
 \end{figure}
 
 \begin{figure}[htbp] 
-  \caption{Local Inequality and the Perception of America as Divided into `Haves' and `Have-Nots': Results Using All Available Data}
+  \caption{Local Inequality and Self-Identification as a `Have-Not': Results Using All Available Data}
   \label{F:t3_pooled}
   \begin{center}
     \includegraphics[width=5.25in]{figures/t3_pooled.pdf}
   \end{center}
   \begin{footnotesize}
-  \begin{tabular}{p{.1in} p{5.1in}}
+  \begin{tabular}{p{.1in} p{6.1in}}
   & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.  The model in Table 3 of \citet{Newman2015}, which purportedly analyzes the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  Estimating the same model on pooled data from the six Pew surveys that included the same item conducted in the time period the article yields no support for the conclusion that lower income people are more likely to identify as have-nots at any observed level of income inequality.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
 
-
+\begin{figure}[htbp] 
+  \caption{Conditional Effects of Income and Local Inequality on Self-Identification as a `Have-Not'}
+  \label{F:t3_multi}
+  \begin{center}
+    \includegraphics[width=5.25in]{figures/t3_multi.pdf}
+  \end{center}
+  \begin{footnotesize}
+  \begin{tabular}{p{.1in} p{6.1in}}
+  & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.  The model in Table 3 of \citet{Newman2015}, which purportedly analyzes the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  Estimating the same model on pooled data from the six Pew surveys that included the same item conducted in the time period the article yields no support for the conclusion that lower income people are more likely to identify as have-nots at any observed level of income inequality.
+  \end{tabular}
+  \end{footnotesize}
+\end{figure}
 \end{spacing}
 
 
