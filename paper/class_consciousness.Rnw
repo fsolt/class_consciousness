@@ -71,7 +71,15 @@ opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=
 \end{abstract}
 
 \newpage
+One of the most important questions underlying recent research on economic inequality and democracy is whether inequality in democratic contexts is self-correcting or instead self-reinforcing.  
+Rational choice arguments have long maintained that, where economic inequality is higher, the benefit of more redistributive policies to the median voter and to those with below-median incomes will be greater, leading them to demand and achieve the adoption of higher taxes and more government spending to ameliorate unequal conditions between those with higher and lower incomes \cite[see, e.g.,][]{Meltzer1981}.
 
+[unequal democracy / relative power stuff]
+
+A prominent recent study, \citet[hereafter NJL]{Newman2015}, argues in favor of the former, more optimistic view.  
+It contends that simply being exposed to high levels of local income inequality prompts those with lower incomes to become more likely to view the United States as divided into haves and have-nots and to see themselves as among the have-nots, that is, to become more likely to achieve a class consciousness vital to contesting the fairness of the economic system and mobilizing in favor of redistribution. 
+%Unfortunately, the article's own reported results do not support this conclusion, and its analysis suffers from additional issues that render even those results untrustworthy.
+%Our independent replication using more and better data, in fact, yields the opposite result: lower-income people living where local levels of income inequality are higher are less likely to reject meritocracy than those living where the income distribution is more egalitarian.
 
 <<label=setup>>==
 p_load(readr, haven, ggplot2, magrittr, stringr, lme4, mi, betareg, truncnorm, mitools, beepr, dplyr)
@@ -453,8 +461,8 @@ t3_inter_inc <- interplot(t3_all, "income", "gini_cnty") +
 
 ggsave(filename="figures/t3_inter_inc.pdf", plot = t3_inter_inc, width = 7, height = 7)
 
-save(t3_inter_inc, file = 'cache/t3_inter_inc.RData') # naive cache to cope with lazyLoad() bug
-rm(t3_inter_inc) 
+# this mi interplot object gets really big for some reason when saved or cached; slim it way down by just pulling out the grob
+t3_inter_inc <- ggplotGrob(t3_inter_inc) 
 @
 
 <<label=t3_predprob>>==
@@ -582,7 +590,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
     }
 }
 
-load("cache/t3_inter_inc.RData") # naive cache for lazyLoad() bug
+# load("cache/t3_inter_inc.RData") # naive cache for lazyLoad() bug
 load("cache/t3_inter_gini.RData") # naive cache for lazyLoad() bug
 
 pdf(file="figures/t3_multi.pdf", width=8, height=3.5)
