@@ -461,8 +461,8 @@ t3_inter_inc <- interplot(t3_all, "income", "gini_cnty") +
 
 ggsave(filename="figures/t3_inter_inc.pdf", plot = t3_inter_inc, width = 7, height = 7)
 
-# this mi interplot object gets really big for some reason when saved or cached; slim it way down by just pulling out the grob
-t3_inter_inc <- ggplotGrob(t3_inter_inc) 
+save(t3_inter_inc, file = 'cache/t3_inter_inc.RData') # naive cache to cope with lazyLoad() bug
+rm(t3_inter_inc) 
 @
 
 <<label=t3_predprob>>==
@@ -590,7 +590,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
     }
 }
 
-# load("cache/t3_inter_inc.RData") # naive cache for lazyLoad() bug
+load("cache/t3_inter_inc.RData") # naive cache for lazyLoad() bug
 load("cache/t3_inter_gini.RData") # naive cache for lazyLoad() bug
 
 pdf(file="figures/t3_multi.pdf", width=8, height=3.5)
