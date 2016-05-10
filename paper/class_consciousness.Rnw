@@ -39,7 +39,7 @@
 \begin{document}
 
 <<label=preamble, include=FALSE>>=
-if (!"pacman" %in% installed.packages()[, "Package"]) install.packages(pacman)
+if (!require(pacman)) install.packages("pacman")
 library(pacman)
 p_load(knitr)
 opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=FALSE, results='hide')
