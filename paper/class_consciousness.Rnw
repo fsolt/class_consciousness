@@ -256,13 +256,17 @@ cnty_data <- select(acs0509, fips:pop_cnty) %>% left_join(bush04_cnty)
 @
 
 <<label=pew_data>>==
+if (!file.exists("../data/pew/haves_havenots/Values09/Values09c.sav")) {
 pew_download(file_id = c(20018505, #Oct05NII
                          20018544, #Sept06
                          20018407, #July07
                          20018374, #Jan08
                          20018335, #EarlyOct08
-                         20018560 #Values09
-                         ), download_dir = "../data/pew/haves_havenots/")
+                         20018560  #Values09
+                         ), download_dir = "../data/pew/haves_havenots/")  
+}
+
+
 @
 
 <<label=t2_reproduction>>==
