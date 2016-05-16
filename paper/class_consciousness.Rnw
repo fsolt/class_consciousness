@@ -82,7 +82,7 @@ It contends that simply being exposed to high levels of local income inequality 
 %Our independent replication using more and better data, in fact, yields the opposite result: lower-income people living where local levels of income inequality are higher are less likely to reject meritocracy than those living where the income distribution is more egalitarian.
 
 <<label=setup>>==
-p_load(readr, haven, ggplot2, magrittr, stringr, lme4, mi, betareg, truncnorm, mitools, beepr, dplyr)
+p_load(readr, haven, ggplot2, magrittr, stringr, lme4, mi, betareg, truncnorm, mitools, beepr, pewdata, dplyr)
 p_load_gh("fsolt/dotwhisker") # until CRAN updated with new by_2sd
 @
 
@@ -253,6 +253,26 @@ acs0509 <- mutate(acs0509,
 				  black_cnty = b02001_003e/b02001_001e,
 				  pop_cnty = b02001_001e/10000)
 cnty_data <- select(acs0509, fips:pop_cnty) %>% left_join(bush04_cnty)
+@
+
+<<label=pew_data>>==
+# Save contact info to .Rprofile before running this document:
+#  options("pew_name" = "Juanita Herrera",
+#         "pew_org" = "Upper Midwest University",
+#         "pew_phone" = "888-000-0000",
+#         "pew_email" = "jherrera@uppermidwest.edu")
+
+if (!file.exists("../data/pew/haves_havenots/Values09/Values09c.sav")) {
+pew_download(file_id = c(20018505, #Oct05NII
+                         20018544, #Sept06
+                         20018407, #July07
+                         20018374, #Jan08
+                         20018335, #EarlyOct08
+                         20018560  #Values09
+                         ), download_dir = "../data/pew/haves_havenots/")  
+}
+
+
 @
 
 <<label=t2_reproduction>>==
