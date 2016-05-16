@@ -661,6 +661,8 @@ Of the six surveys, the only one that yields a statistically significant result 
   \end{footnotesize}
 \end{figure}
 
+%%%% Jungmin here
+
 \begin{figure}[htbp] 
   \caption{Local Inequality and Self-Identification as a `Have-Not': Results Using All Available Data}
   \label{F:t3_pooled}
@@ -675,6 +677,8 @@ The published NJL analysis, purportedly of the 2006 Pew survey, is not reproduci
   \end{tabular}
   \end{footnotesize}
 \end{figure}
+
+%%%% HU here
 
 \begin{figure}[htbp] 
   \caption{Conditional Effects of Income and Local Inequality on Self-Identification as a `Have-Not'}
