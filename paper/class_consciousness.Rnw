@@ -261,6 +261,7 @@ cnty_data <- select(acs0509, fips:pop_cnty) %>% left_join(bush04_cnty)
 #         "pew_org" = "Upper Midwest University",
 #         "pew_phone" = "888-000-0000",
 #         "pew_email" = "jherrera@uppermidwest.edu")
+# You must also have Firefox (available at <firefox.com>) installed on your machine
 
 if (!file.exists("../data/pew/haves_havenots/Values09/Values09c.sav")) {
 pew_download(file_id = c(20018505, #Oct05NII
