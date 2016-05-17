@@ -683,6 +683,8 @@ Of the six surveys, the only one that yields a statistically significant result 
 
 %%%% Jungmin here
 
+practice
+
 \begin{figure}[htbp] 
   \caption{Local Inequality and Self-Identification as a `Have-Not': Results Using All Available Data}
   \label{F:t3_pooled}
