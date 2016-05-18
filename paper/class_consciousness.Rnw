@@ -559,12 +559,6 @@ pred_probs <- function(m, var1, var2, var2_vals,
   return(pp)
 }
 
-# t3_all_bu <- t3_all
-# 
-# t3_all <- lapply(t3_all, function(data){
-#   data@frame$`as.factor(survey)` <- NULL
-#   return(data)
-#   }) # get rid of factor variable
 
 t3_pp <- pred_probs(t3_all, var1 = "gini_cnty", var2 = "income", 
                     var2_vals = c(1, 5, 9), times = 50, sims = 1000)
@@ -713,7 +707,23 @@ The published NJL analysis, purportedly of the 2006 Pew survey, is not reproduci
   \end{footnotesize}
 \end{figure}
 
-%%%% HU here
+Regarding the influence of income inequality on awaking the class consciousness, NJL concluded that people with lower income are more likely to identify as ``have-nots''  when they live in contexts of greater income inequality. 
+The main empirical evidence for this argument was a negative and statistically significant interactive term. 
+However, the significance of interactive term is not an appropriate criterion for judging the conditional effect in interactions, regardless the aforementioned selection bias in the data. 
+It only implies the effect of inequality on identifying ``have-nots'' when the income is zero, but it does not offer any direct information about the situation when income is not zero.
+In NJL's measure, there is even no category for zero income; the smallest category is "less than ten thousand."
+In this case, the significant interactive term has even less substantive meaning.
+
+To detect the conditional effect of inequality in the non-zero income conditions, one needs to calcuate the marginal effect of inequality \citep[see more technical details in][]{Brambor2006}. 
+We did the calculation again based on all the avaliable data, controlling for the panel difference with least square fixed effect.
+The result is visualized in the leftest panel of Figure \ref{F:t3_multi}.
+The solid line represents the estimate of the effect of inequality affecting the log likelihood to identify as ``have-nots'' led by income, and the shadow indicates the 95\% conficence intervals. 
+Only when the intervals of a higher inequality does not overlap the intervals of lower inequality can one say the effect of inequality is different from zero, while such pattern was not shown in the plot at all. 
+To interpret this more substantively, we also calculated the predicted probability of identification for people with the lowest, median, and highest income at different inequality levels. 
+The result is presented in the righest panel of Figure \ref{F:t3_multi}, and no significant effect can be identified, either.
+In conclusion, with an approporiate interpretation of the empirical evidence, NJL's argument is actually rejected.
+
+
 
 \begin{figure}[htbp] 
   \caption{Conditional Effects of Income and Local Inequality on Self-Identification as a `Have-Not'}
