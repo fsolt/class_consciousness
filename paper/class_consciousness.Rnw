@@ -88,7 +88,7 @@ p_load_gh("fsolt/dotwhisker") # until CRAN updated with new by_2sd
 
 
 <<label=format_fxns>>==
-gen_partyid <- function(df) {
+Ngen_partyid <- function(df) {
 	pid <- rep(NA, length(df$party))
 	pid[df$party==1 & df$partystr==1] <- 5
 	pid[df$party==1 & df$partystr==2] <- 4
@@ -244,6 +244,8 @@ missing$county0 <- NULL # drop tempvar
 
 bush04_cnty %<>% rbind(missing) %>% select(fips, perc_bush04)
 
+
+
 acs0509 <- read_csv("../data/acs0509-counties.csv") # this throws warnings; they are irrelevant
 names(acs0509) <- tolower(names(acs0509))
 acs0509 <- mutate(acs0509,
@@ -261,7 +263,11 @@ cnty_data <- select(acs0509, fips:pop_cnty) %>% left_join(bush04_cnty)
 #         "pew_org" = "Upper Midwest University",
 #         "pew_phone" = "888-000-0000",
 #         "pew_email" = "jherrera@uppermidwest.edu")
+<<<<<<< HEAD
+library(pewdata)
+=======
 # You must also have Firefox (available at <firefox.com>) installed on your machine
+>>>>>>> d7ccca15332bbd1a77c2d6be58ea95166d067c2b
 
 if (!file.exists("../data/pew/haves_havenots/Values09/Values09c.sav")) {
 pew_download(file_id = c(20018505, #Oct05NII
@@ -306,7 +312,7 @@ t2_res <- format_mi_results(t2)
 hhn05 <- read_sav("../data/pew/haves_havenots/Oct05NII/Oct05NIIc.sav") # Oct05NII (all controls)
 hhn06 <- read_dta("../data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # used in Table 2
 hhn07 <- read_sav("../data/pew/haves_havenots/July07/July07c.sav") # July07 (missing labor, employ)
-hhn0801 <- read_dta("../data/pew/haves_havenots/Jan08/Jan08c.dta") # Jan08 (all controls)
+hhn0801 <- read_dta("../data/pew/haves_havenots/Jan08/Jan08c.dta") # Jan08 (all controls), Converted first with StatTransfer as read_sav didn't work
 hhn0810 <- read_sav("../data/pew/haves_havenots/EarlyOct08/EarlyOct08c.sav") # EarlyOct2008 (missing labor, attend)
 hhn09 <- read_sav("../data/pew/haves_havenots/Values09/Values09c.sav") %>% # Values09 (all controls, but only Survey B asked hhn)
     filter(values==2) # keep only Survey B, which asked hhn questions
@@ -332,9 +338,9 @@ hhn_mi <- hhn_mi(hhn)
 t2_all <- with(hhn_mi, 
               glmer(formula = div_hhn~gini_cnty+
                         income_cnty+black_cnty+perc_bush04+pop_cnty+
-                        income+educ+age+male+union+emp+partyid+ideo+attend+
-                        (1|fips), family=binomial(link="logit")))
-t2_all_res <- format_mi_results(t2_all)
+                        income+educ+age+male+union+emp+partyid+ideo+attend+ 
+                      as.factor(survey) + (1|fips), family=binomial(link="logit")))
+t2_all_res <- format_mi_results(t2_all)[1:14,]
 @
 
 <<label=t2_rep_all_plot>>==
@@ -368,7 +374,7 @@ for (i in 1:length(yrs)) {
     res <- with(ds, 
               glmer(formula = div_hhn~gini_cnty+
                         income_cnty+black_cnty+perc_bush04+pop_cnty+
-                        income+educ+age+male+union+emp+partyid+ideo+attend+
+                        income+educ+age+male+union+emp+partyid+ideo+attend+ 
                         (1|fips), family=binomial(link="logit")))
     tidy_res <- format_mi_results(res)
     tidy_res$model <- paste("Pew", yrs[i])
@@ -398,8 +404,8 @@ vars_list_t3 <- c("gini_cnty", "income", "gini_cnty:income", "income_cnty",
 t3_all <- with(hhn_mi, 
               glmer(formula = have_not~gini_cnty+income+gini_cnty:income+
                         income_cnty+black_cnty+perc_bush04+pop_cnty+
-                        educ+age+male+union+emp+partyid+ideo+attend+
-                        (1+income|fips), family=binomial(link="logit")))
+                        educ+age+male+union+emp+partyid+ideo+attend+ 
+                      as.factor(survey)+(1+income|fips), family=binomial(link="logit")))
 t3_all_res <- format_mi_results(t3_all)
 t3_all_res <- t3_all_res[match(vars_list_t3, t3_all_res$term),]
 @
@@ -513,16 +519,15 @@ pred_probs <- function(m, var1, var2, var2_vals,
   if (!var12 %in% unlist(dimnames(m@pp$X)[2])) 
     stop(paste("Model does not include the interaction of", var1, "and", 
                var2, "."))
-  
+  df <- df[, -16] # take off the factor
   iv_medians <- summarize_each(df, funs(median(., na.rm = TRUE))) 
 
   fake_data <- iv_medians[rep(1:nrow(iv_medians), each=times*length(var2_vals)), ] 
-  fake_data[[var1]] <- with(df, rep(seq(min(get(var1)), max(get(var1)), length.out=times),
-                                    times=length(var2_vals)))
+  fake_data[[var1]] <- with(df, rep(seq(min(get(var1)), max(get(var1)), length.out=times),times=length(var2_vals)))
   fake_data[[var2]] <- rep(var2_vals, each=times)
   fake_data[[var12]] <- fake_data[[var1]] * fake_data[[var2]]
 
-  pp <- rowMeans(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef))))
+  pp <- rowMeans(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef[,c(1:15, 21)]))))
   row_quantiles <- function (x, probs) {
     naValue <- NA
     storage.mode(naValue) <- storage.mode(x)
@@ -545,7 +550,7 @@ pred_probs <- function(m, var1, var2, var2_vals,
     q <- drop(q)
     q
   }
-  pp_bounds <- row_quantiles(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef))), prob = c(.025, .975))
+  pp_bounds <- row_quantiles(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef[, c(1:15, 21)]))), prob = c(.025, .975))
   pp <- cbind(pp, pp_bounds)
   pp <- pp*100
   colnames(pp) <- c("est", "lb", "ub")
@@ -553,6 +558,7 @@ pred_probs <- function(m, var1, var2, var2_vals,
   pp$income <- as.factor(pp$income)
   return(pp)
 }
+
 
 t3_pp <- pred_probs(t3_all, var1 = "gini_cnty", var2 = "income", 
                     var2_vals = c(1, 5, 9), times = 50, sims = 1000)
@@ -701,7 +707,23 @@ The published NJL analysis, purportedly of the 2006 Pew survey, is not reproduci
   \end{footnotesize}
 \end{figure}
 
-%%%% HU here
+Regarding the influence of income inequality on awaking the class consciousness, NJL concluded that people with lower income are more likely to identify as ``have-nots''  when they live in contexts of greater income inequality. 
+The main empirical evidence for this argument was a negative and statistically significant interactive term. 
+However, the significance of interactive term is not an appropriate criterion for judging the conditional effect in interactions, regardless the aforementioned selection bias in the data. 
+It only implies the effect of inequality on identifying ``have-nots'' when the income is zero, but it does not offer any direct information about the situation when income is not zero.
+In NJL's measure, there is even no category for zero income; the smallest category is "less than ten thousand."
+In this case, the significant interactive term has even less substantive meaning.
+
+To detect the conditional effect of inequality in the non-zero income conditions, one needs to calcuate the marginal effect of inequality \citep[see more technical details in][]{Brambor2006}. 
+We did the calculation again based on all the avaliable data, controlling for the panel difference with least square fixed effect.
+The result is visualized in the leftest panel of Figure \ref{F:t3_multi}.
+The solid line represents the estimate of the effect of inequality affecting the log likelihood to identify as ``have-nots'' led by income, and the shadow indicates the 95\% conficence intervals. 
+Only when the intervals of a higher inequality does not overlap the intervals of lower inequality can one say the effect of inequality is different from zero, while such pattern was not shown in the plot at all. 
+To interpret this more substantively, we also calculated the predicted probability of identification for people with the lowest, median, and highest income at different inequality levels. 
+The result is presented in the righest panel of Figure \ref{F:t3_multi}, and no significant effect can be identified, either.
+In conclusion, with an approporiate interpretation of the empirical evidence, NJL's argument is actually rejected.
+
+
 
 \begin{figure}[htbp] 
   \caption{Conditional Effects of Income and Local Inequality on Self-Identification as a `Have-Not'}
