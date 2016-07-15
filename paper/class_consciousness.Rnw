@@ -39,9 +39,7 @@
 \begin{document}
 
 <<label=preamble, include=FALSE>>=
-if (!require(pacman)) install.packages("pacman")
-library(pacman)
-p_load(knitr)
+library(knitr)
 opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=FALSE, results='hide')
 @
 
@@ -103,27 +101,13 @@ library(dplyr)
 
 
 <<label=format_fxns>>==
-Ngen_partyid <- function(df) {
+gen_partyid <- function(df) {
 	pid <- rep(NA, length(df$party))
-	pid[df$party==1 & df$partystr==1] <- 5
-	pid[df$party==1 & df$partystr==2] <- 4
+	pid[df$party==1] <- 5
+	pid[df$party==2] <- 1
+	pid[(df$party==3 | df$party==4 | df$party==5)] <- 3
 	pid[df$partyln==1] <- 4
-	pid[(df$party==3 | df$party==4) & df$partyln==9] <- 3
 	pid[df$partyln==2] <- 2
-	pid[df$party==2 & df$partystr==2] <- 2
-	pid[df$party==2 & df$partystr==1] <- 1
-	return(pid)
-}
-
-gen_partyid2 <- function(df) {
-	pid <- rep(NA, length(df$party))
-	pid[df$party==1 & df$partystr==1] <- 7
-	pid[df$party==1 & df$partystr==2] <- 6
-	pid[df$partyln==1] <- 5
-	pid[(df$party==3 | df$party==4) & df$partyln==9] <- 4
-	pid[df$partyln==2] <- 3
-	pid[df$party==2 & df$partystr==2] <- 2
-	pid[df$party==2 & df$partystr==1] <- 1
 	return(pid)
 }
 
@@ -278,20 +262,16 @@ cnty_data <- select(acs0509, fips:pop_cnty) %>% left_join(bush04_cnty)
 #         "pew_org" = "Upper Midwest University",
 #         "pew_phone" = "888-000-0000",
 #         "pew_email" = "jherrera@uppermidwest.edu")
-<<<<<<< HEAD
-library(pewdata)
-=======
 # You must also have Firefox (available at <firefox.com>) installed on your machine
->>>>>>> d7ccca15332bbd1a77c2d6be58ea95166d067c2b
+# Jan06 and Oct08 needed converting to .dta files to be read into R, so are those
+# two files are included in the reproducibility materials
 
-if (!file.exists("../data/pew/haves_havenots/Values09/Values09c.sav")) {
+if (!file.exists("../data/pew_hhn/Values09/Values09c.sav")) {
 pew_download(file_id = c(20018505, #Oct05NII
-                         20018544, #Sept06
                          20018407, #July07
-                         20018374, #Jan08
                          20018335, #EarlyOct08
                          20018560  #Values09
-                         ), download_dir = "../data/pew/haves_havenots/")  
+                         ), download_dir = "../data/pew_hhn/")  
 }
 @
 
@@ -305,7 +285,7 @@ vars_proper <- c("Income Inequality", "Median Household Income", "Percent Black"
                  "Religious Attendance")
 
 ### 2006 (Table 2)
-hhn06 <- read_dta("../data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # Converted first with StatTransfer as read_sav didn't work
+hhn06 <- read_dta("../data/pew_hhn/Sept06/Sept06NIIc.dta") # Converted first with StatTransfer as read_sav didn't work
 hhn06x <- hhn_format(hhn06, cfips="fips", dh="q52", hn="q53")
 
 hhn06x_mi <- hhn_mi(hhn06x) # multiply impute missing data
@@ -316,27 +296,20 @@ t2 <- with(hhn06x_mi,
                         income+educ+age+male+union+emp+partyid+ideo+attend+
                         (1|fips), family=binomial(link="logit")))
 t2_res <- format_mi_results(t2)
-#dwplot(t2_res)
 @
 
 <<label=t2_replication_all>>==
 ### additional data
 # load all datasets
-hhn05 <- read_sav("../data/pew/haves_havenots/Oct05NII/Oct05NIIc.sav") # Oct05NII (all controls)
-hhn06 <- read_dta("../data/pew/haves_havenots/Sept06/Sept06NIIc.dta") # used in Table 2
-hhn07 <- read_sav("../data/pew/haves_havenots/July07/July07c.sav") # July07 (missing labor, employ)
-hhn0801 <- read_dta("../data/pew/haves_havenots/Jan08/Jan08c.dta") # Jan08 (all controls), Converted first with StatTransfer as read_sav didn't work
-hhn0810 <- read_sav("../data/pew/haves_havenots/EarlyOct08/EarlyOct08c.sav") # EarlyOct2008 (missing labor, attend)
-hhn09 <- read_sav("../data/pew/haves_havenots/Values09/Values09c.sav") %>% # Values09 (all controls, but only Survey B asked hhn)
+hhn05 <- read_sav("../data/pew_hhn/Oct05NII/Oct05NIIc.sav") # Oct05NII (all controls)
+hhn07 <- read_sav("../data/pew_hhn/July07/July07c.sav") # July07 (missing labor, employ)
+hhn0801 <- read_dta("../data/pew_hhn/Jan08/Jan08c.dta") # Jan08 (all controls), Converted first with StatTransfer as read_sav didn't work
+hhn0810 <- read_sav("../data/pew_hhn/EarlyOct08/EarlyOct08c.sav") # EarlyOct2008 (missing labor, attend)
+hhn09 <- read_sav("../data/pew_hhn/Values09/Values09c.sav") %>% # Values09 (all controls, but only Survey B asked hhn)
     filter(values==2) # keep only Survey B, which asked hhn questions
-
-# no fips in Apr10-political-future;
-#               Sept 22-25 2011 omnibus public; or 
-#               Dec11 Political (they're too late for the acs0509 contextual data anyway)
 
 # format all datasets
 hhn05x <- hhn_format(hhn05, cfips="qfips", dh="q52", hn="q53")
-hhn06x <- hhn_format(hhn06, cfips="fips", dh="q52", hn="q53")
 hhn07x <- hhn_format(hhn07, cfips="qfips", dh="q40", hn="q41")
 hhn0801x <- hhn_format(hhn0801, cfips="fips", dh="q33", hn="q34")
 hhn0810x <- hhn_format(hhn0810, cfips="zfips", dh="q56", hn="q57")
