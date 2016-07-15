@@ -82,8 +82,23 @@ It contends that simply being exposed to high levels of local income inequality 
 %Our independent replication using more and better data, in fact, yields the opposite result: lower-income people living where local levels of income inequality are higher are less likely to reject meritocracy than those living where the income distribution is more egalitarian.
 
 <<label=setup>>==
-p_load(readr, haven, ggplot2, magrittr, stringr, lme4, mi, betareg, truncnorm, mitools, beepr, pewdata, dplyr)
-p_load_gh("fsolt/dotwhisker") # until CRAN updated with new by_2sd
+# library(checkpoint)
+# checkpoint("2016-07-15")
+
+library(readr)
+library(haven)
+library(ggplot2)
+library(magrittr)
+library(stringr)
+library(lme4)
+library(mi)
+library(betareg)
+library(truncnorm)
+library(mitools)
+library(beepr)
+library(pewdata)
+library(dotwhisker)
+library(dplyr)
 @
 
 
@@ -278,8 +293,6 @@ pew_download(file_id = c(20018505, #Oct05NII
                          20018560  #Values09
                          ), download_dir = "../data/pew/haves_havenots/")  
 }
-
-
 @
 
 <<label=t2_reproduction>>==
