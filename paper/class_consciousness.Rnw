@@ -75,9 +75,14 @@ Rational choice arguments have long maintained that, where economic inequality i
 [unequal democracy / relative power stuff]
 
 A prominent recent study, \citet[hereafter NJL]{Newman2015}, argues in favor of the former, more optimistic view.  
-It contends that simply being exposed to high levels of local income inequality prompts those with lower incomes to become more likely to view the United States as divided into haves and have-nots and to see themselves as among the have-nots, that is, to become more likely to achieve a class consciousness vital to contesting the fairness of the economic system and mobilizing in favor of redistribution. 
-%Unfortunately, the article's own reported results do not support this conclusion, and its analysis suffers from additional issues that render even those results untrustworthy.
-%Our independent replication using more and better data, in fact, yields the opposite result: lower-income people living where local levels of income inequality are higher are less likely to reject meritocracy than those living where the income distribution is more egalitarian.
+It concludes that simply being exposed to high levels of local income inequality prompts those with lower incomes to become more likely to view the United States as divided into haves and have-nots and to see themselves as among the have-nots, that is, to become more likely to achieve a class consciousness vital to contesting the fairness of the economic system and demanding more redistribution.\footnote{\doublespacing NJL also purports to show that lower-income people are more likely to reject, and higher-income people are more likely to accept, the meritocratic ideal that hard work leads to success when living in contexts of greater local income inequality.  
+\citet{Solt2016b}, however, documents how this conclusion is not in fact supported by the results presented in NJL but instead is based on a crucial misinterpretation of a multiplicative interaction term \citep[cf.,][]{Brambor2006}.  
+In an independent replication that brings more and better data to the question, \citet{Solt2016b} finds that those with lower incomes are actually \emph{less} likely to reject meritocracy where income inequality is greater.} 
+
+NJL reaches this conclusion on the basis of analyses of the September 2006 Pew News Interest Index Survey, which it describes as ``containing a unique set of questions tapping perceptions of economic hierarchy and inequality and respondents’ perception of their own position within such a hierarchy'' (p.336).  
+%These questions asked, first, whether respondents thought of the United States as being divided into `haves' and `have-nots,' and second, of which of the two groups, the `haves' and the `have-nots,' they considered themselves members.
+This set of questions, however, was not at all unique to the 2006 survey: they were in fact included in no fewer than six surveys during the period examined in the study, 2005 to 2009. Given the longstanding admonition to maximize the number of observations used to test a theory's implications \citep[see, e.g.,][]{King1994}, this is a surprising oversight.\footnote{\doublespacing It is perhaps even more surprising in light of the fact that one of these additional surveys, the April 2009 Values Survey, was included in NJL's analyses of meritocratic beliefs even though it did \emph{not} ask the same item as other surveys pooled in that analysis \citep[see NJL, p. 331;][8]{Solt2016b}.}
+
 
 <<label=setup>>==
 library(checkpoint)
@@ -99,7 +104,6 @@ library(dotwhisker)
 library(interplot)
 library(dplyr)
 @
-
 
 <<label=format_fxns>>==
 gen_partyid <- function(df) {
@@ -568,7 +572,7 @@ t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) +
 ggsave("figures/t3_pp_plot.pdf", plot = t3_pp_plot, width = 7, height = 7)
 @
 
-<<label=t3_multi, cache=FALSE>>==
+<<label=t3_multi, dependson=c(-2, -3)>>==
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
     require(grid)
     
@@ -615,21 +619,10 @@ graphics.off()
 rm(t3_inter_inc, t3_inter_gini) # discard naively cached objects
 @
 
-
-
-An important step in the process of conducting sound research is striving to utilize all available data. 
-Researchers should seek to conduct their analysis on the entirety of data that they have at their disposal. 
-Doing so provides a number of benefits:  it increases the likelihood that the sample utilized captures the true distribution of the underlying population, and it affords greater leverage in testing the implications of one’s hypothesis. 
-While the issue of selection bias cannot be avoided simply by including all available data, limiting analysis to a particular dataset, particularly when alternatives are available, may cast doubt on the inferences drawn from that analysis. 
-By including all relevant data researchers are better able to observe the implications of their theory, thus providing greater support for the hypotheses they advance.
-
-%If research is limited to a particular source of data, the findings may be called into question. The limited data may provide evidence of a relationship that is not present in a larger, more representative sample. We can draw an example of the dangers of not including all relevant data from \citet{Newman2015}.  In an attempt to test some underlying assumptions of their theory the authors rely on 2006 Pew Research Center dataset due to its 
-NJL claims to employ ``an additional national data set conducted by the Pew Research Center in 2006 containing a unique set of questions tapping perceptions of economic hierarchy and inequality and respondents perception of their own position within such a hierarchy'' \citep[336]{Newman2015}. 
-%As presented by the authors, this dataset provides the only source of information on responses to the question whether or not an American thinks of America as being divided into haves and have-nots, and whether they think of themselves as being haves or have-nots. Employing this dataset the authors find further support for their theory, in situations of higher inequality respondents are more likely to believe that America is divided in such a way, and the poor are more likely to identify themselves as have-nots. 
-In reality, these questions are not unique to the 2006 dataset, but are instead present in a number of Pew surveys, including some used in the paper's earlier analysis. 
-Perhaps it is by coincidence that, as shown in Figure \ref{F:t2_by_survey}, the coefficient of interest only achieves statistical significance when using the 2006 data. 
-As illustrated, no other dataset produces a statistically significant coefficient for Gini according to the authors’ model. 
-This provides a clear illustration of the importance of including all relevant data; failure to do so can lead to biased results.
+Next, we consider each of the six surveys separately.
+As shown in Figure \ref{F:t2_by_survey}, the coefficient for income inequality is \emph{only} estimated to be positive and statistically significant in the 2006 survey employed by NJL. 
+Not one of the other five datasets yields a statistically significant coefficient, and in three of them the point estimate is actually negative. 
+%This provides a clear illustration of the importance of including all relevant data; failure to do so can lead to biased results.
 
 \begin{figure}[htbp] 
   \caption{Local Inequality and the Perception of America as Divided into `Haves' and `Have-Nots': Results Using All Available Data}
@@ -756,6 +749,6 @@ There is no support, however, for the conclusion reached in NJL that lower incom
 \pagebreak
 \newpage
 \bibliographystyle{ajps}
-\bibliography{FSLibrary}
+\bibliography{class_consciousness}
 
 \end{document}
