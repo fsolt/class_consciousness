@@ -80,9 +80,10 @@ It contends that simply being exposed to high levels of local income inequality 
 %Our independent replication using more and better data, in fact, yields the opposite result: lower-income people living where local levels of income inequality are higher are less likely to reject meritocracy than those living where the income distribution is more egalitarian.
 
 <<label=setup>>==
-# library(checkpoint)
-# checkpoint("2016-07-15")
+library(checkpoint)
+checkpoint("2016-07-15")
 
+library(codetools)
 library(readr)
 library(haven)
 library(ggplot2)
@@ -93,9 +94,9 @@ library(mi)
 library(betareg)
 library(truncnorm)
 library(mitools)
-library(beepr)
 library(pewdata)
 library(dotwhisker)
+library(interplot)
 library(dplyr)
 @
 
@@ -322,11 +323,11 @@ rm(list = ls(pattern="hhn0[5789].*")) # free up memory
 hhn_mi <- hhn_mi(hhn)
 
 t2_all <- with(hhn_mi, 
-              glmer(formula = div_hhn~gini_cnty+
-                        income_cnty+black_cnty+perc_bush04+pop_cnty+
-                        income+educ+age+male+union+emp+partyid+ideo+attend+ 
-                      as.factor(survey) + (1|fips), family=binomial(link="logit")))
-t2_all_res <- format_mi_results(t2_all)[1:14,]
+               glmer(formula = div_hhn~gini_cnty+
+                       income_cnty+black_cnty+perc_bush04+pop_cnty+
+                       income+educ+age+male+union+emp+partyid+ideo+attend+ 
+                       (1|survey) + (1|fips), family=binomial(link="logit")))
+t2_all_res <- format_mi_results(t2_all)
 @
 
 <<label=t2_rep_all_plot>>==
@@ -388,10 +389,10 @@ vars_list_t3 <- c("gini_cnty", "income", "gini_cnty:income", "income_cnty",
                   "black_cnty", "perc_bush04", "pop_cnty",
                   "educ", "age", "male", "union", "emp", "partyid", "ideo", "attend")
 t3_all <- with(hhn_mi, 
-              glmer(formula = have_not~gini_cnty+income+gini_cnty:income+
-                        income_cnty+black_cnty+perc_bush04+pop_cnty+
-                        educ+age+male+union+emp+partyid+ideo+attend+ 
-                      as.factor(survey)+(1+income|fips), family=binomial(link="logit")))
+               glmer(formula = have_not~gini_cnty+income+gini_cnty:income+
+                       income_cnty+black_cnty+perc_bush04+pop_cnty+
+                       educ+age+male+union+emp+partyid+ideo+attend+ 
+                       (1|survey)+(1+income|fips), family=binomial(link="logit")))
 t3_all_res <- format_mi_results(t3_all)
 t3_all_res <- t3_all_res[match(vars_list_t3, t3_all_res$term),]
 @
@@ -444,7 +445,6 @@ ggsave("figures/t3_pooled.pdf", plot = g3, width = 6, height = 5)
 @
 
 <<label=t3_inter_gini>>==
-p_load(interplot)
 inc_labels <- c("<$10k", "$10-20k", "$20-30k", "$30-40k", "$40-50k",
                 "$50-75k", "$75-100k", "$100-150k", ">$150k")
 t3_inter_gini <- interplot(t3_all, "gini_cnty", "income") +
@@ -493,7 +493,11 @@ pred_probs <- function(m, var1, var2, var2_vals,
   }
   
   df <- data.frame(m@frame)
-  df[[names(m@flist)]] <- NULL # omit L2 var
+  # omit L2 vars
+  for (i in seq(length(names(m@flist)))) {
+    df[[names(m@flist)[i]]] <- NULL  
+  }
+   
   names(df)[1] <- "(Intercept)" # replace DV with intercept
   df$`(Intercept)` <- 1
   
@@ -505,7 +509,6 @@ pred_probs <- function(m, var1, var2, var2_vals,
   if (!var12 %in% unlist(dimnames(m@pp$X)[2])) 
     stop(paste("Model does not include the interaction of", var1, "and", 
                var2, "."))
-  df <- df[, -16] # take off the factor
   iv_medians <- summarize_each(df, funs(median(., na.rm = TRUE))) 
 
   fake_data <- iv_medians[rep(1:nrow(iv_medians), each=times*length(var2_vals)), ] 
@@ -513,7 +516,7 @@ pred_probs <- function(m, var1, var2, var2_vals,
   fake_data[[var2]] <- rep(var2_vals, each=times)
   fake_data[[var12]] <- fake_data[[var1]] * fake_data[[var2]]
 
-  pp <- rowMeans(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef[,c(1:15, 21)]))))
+  pp <- rowMeans(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef))))
   row_quantiles <- function (x, probs) {
     naValue <- NA
     storage.mode(naValue) <- storage.mode(x)
@@ -536,7 +539,7 @@ pred_probs <- function(m, var1, var2, var2_vals,
     q <- drop(q)
     q
   }
-  pp_bounds <- row_quantiles(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef[, c(1:15, 21)]))), prob = c(.025, .975))
+  pp_bounds <- row_quantiles(plogis(data.matrix(fake_data) %*% t(data.matrix(m_sims@fixef))), prob = c(.025, .975))
   pp <- cbind(pp, pp_bounds)
   pp <- pp*100
   colnames(pp) <- c("est", "lb", "ub")
@@ -544,7 +547,6 @@ pred_probs <- function(m, var1, var2, var2_vals,
   pp$income <- as.factor(pp$income)
   return(pp)
 }
-
 
 t3_pp <- pred_probs(t3_all, var1 = "gini_cnty", var2 = "income", 
                     var2_vals = c(1, 5, 9), times = 50, sims = 1000)
@@ -737,7 +739,7 @@ There is no support, however, for the conclusion reached in NJL that lower incom
 #                          (1|fips) + (1|survey), family=binomial(link="logit")))
 # t2_all2_res <- format_mi_results(t2_all2)
 # summary(t2_all2_res)
-# beep()
+
 
 # No sign of interaction either: gini_cnty not significant at any income
 # t2_all3 <- with(hhn_mi, 
@@ -748,7 +750,6 @@ There is no support, however, for the conclusion reached in NJL that lower incom
 # t2_all3_res <- format_mi_results(t2_all3)
 # summary(t2_all3_res)
 # interplot(t2_all3, "gini_cnty", "income")
-# beep()
 @
 
 \clearpage
