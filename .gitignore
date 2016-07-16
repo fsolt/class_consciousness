@@ -15,4 +15,4 @@
 *.ent
 .DS_Store
 paper/cache/*
-data/pew*
+data/*
