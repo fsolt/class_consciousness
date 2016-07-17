@@ -81,17 +81,18 @@ In an independent replication that brings more and better data to the question, 
 
 NJL reaches this conclusion on the basis of analyses of the September 2006 Pew News Interest Index Survey, which it describes as ``containing a unique set of questions tapping perceptions of economic hierarchy and inequality and respondents’ perception of their own position within such a hierarchy'' (p.336).  
 %These questions asked, first, whether respondents thought of the United States as being divided into `haves' and `have-nots,' and second, of which of the two groups, the `haves' and the `have-nots,' they considered themselves members.
-These questions, however, were not at all unique to the 2006 survey: they were in fact included in no fewer than six Pew surveys during the period examined in the study, 2005 to 2009. Given the longstanding admonition to maximize the number of observations used to test a theory's implications \citep[see, e.g.,][]{King1994}, this is a surprising oversight.\footnote{\doublespacing It is perhaps even more surprising in light of the fact that one of these additional surveys, Pew's April 2009 Values Survey, was included in NJL's analyses of meritocratic beliefs even though it did \emph{not} ask the same item as other surveys pooled in those analyses \citep[see NJL, p. 331;][8]{Solt2016b}.}
+These questions, however, were not at all unique to the 2006 survey: they were in fact included in no fewer than six Pew surveys during the period examined in the study, 2005 to 2009. 
+Given the longstanding admonition to maximize the number of observations used to test a theory's implications \citep[see, e.g.,][]{King1994}, this is a surprising oversight.\footnote{\doublespacing It is perhaps even more surprising in light of the fact that one of these additional surveys, Pew's April 2009 Values Survey, was included in NJL's analyses of meritocratic beliefs even though it did \emph{not} ask the same item as other surveys pooled in those analyses \citep[see NJL, p.331;][8]{Solt2016b}.}
 
 To examine whether the choice of data affected the results presented in NJL, we first reproduce Table 2 from that article using the 2006 Pew survey alone, which presents results regarding views of the United States as divided into `haves' and `have-nots.'  
 The NJL reproducibility materials note that the article's authors are themselves unable to reproduce the results exactly \citep{Newman2015a}, though we confirm that the differences between the published results and those obtained are indeed quite small.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
-First, although NJL describes its model as including a control for unemployment (p. 331), the survey only includes an item regarding \emph{employment} status; that is, the unemployed cannot be distinguished from students, retirees, and others not in the workforce in these data.
+First, although NJL describes its model as including a control for unemployment (p.331), the survey only includes an item regarding \emph{employment} status; that is, the unemployed cannot be distinguished from students, retirees, and others not in the workforce in these data.
 We therefore simply more accurately label this variable as ``Employed.''
 Second, missing data in the survey appear to have been singly imputed in the reproducibility materials using an undocumented procedure.
 Following the advice that \emph{multiple} imputation is the best way to preserve observations with missing data without understating the uncertainty due to missing values \citep[see, e.g.,][]{Rubin1987}, we use the \R package \texttt{mi} to deal with this issue \citep{Su2011}.  Neither of these changes yield substantial differences from the results reported in NJL.}
 Next, we replicate this analysis using all six of the available Pew surveys pooled together.\footnote{\doublespacing We note that items for three control variables were not asked in all six surveys: union membership (omitted from the July 2007 and October 2008 surveys), employment (July 2007), and church attendance (October 2008).  To deal with this issue, we pooled the surveys before multiply imputing the missing data \citep[see][]{Gelman1998}.}  
 In both cases, we follow NJL and examine only views among white respondents.  
-The results are displayed as a dot-and-whisker plot \citep{Kastellec2007, Solt2015c} in Figure~\ref{F:t2_pooled}, with the dots representing the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable and the whiskers representing the 95\% confidence intervals of these estimates.  
+Figure~\ref{F:t2_pooled} displays the results as a dot-and-whisker plot \citep[see][]{Kastellec2007, Solt2015c}, with the dots representing the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable and the whiskers representing the 95\% confidence intervals of these estimates.  
 
 <<label=setup>>==
 library(checkpoint)
@@ -382,17 +383,16 @@ The statistically significant result for county income inequality in the 2006 su
 
 The upper, lighter lines depict the results obtained using only the 2006 survey as in NJL; the lower, darker lines are those using all of the available surveys.
 There are many similarities: in both sets of results, most of the estimates do not reach statistical significance, but Republicans and conservatives are less likely to view the United States as divided and union members are more so.
-The differences, however, are telling
+The differences, however, are telling.
 The counterintuitive finding in the 2006 data that people in counties where George W. Bush won a larger share of the vote in 2004 were more likely to see a divide between haves and have-nots evaporates when all of the available surveys are examined, and the surprising null result for income gives way to the expected strongly negative relationship.
-Most importantly, while the estimate for the context of local income inequality in the 2006 data is positive and statistically significant, this evidence that ``income inequality and relative economic comparisons will become more salient among citizens residing in high- than low-inequality contexts'' (NJL, p. 337) disappears when all of the available surveys are included in the sample.
+Most importantly, while the estimate for the context of local income inequality in the 2006 data is positive and statistically significant, this evidence that ``income inequality and relative economic comparisons will become more salient among citizens residing in high- than low-inequality contexts'' (NJL, p.337) disappears when all of the available surveys are included in the sample.
 
 Moreover, consider Figure~\ref{F:t2_by_survey}.  
 It is a ``secret weapon'' plot \citep[see][198]{Gelman2008} that displays the result for income inequality when the NJL model is fit to each of the six available Pew surveys separately.
 The coefficient for income inequality is \emph{only} estimated to be positive and statistically significant in the 2006 survey employed in NJL. 
 Not one of the other five datasets yields a statistically significant coefficient, and in three of them the point estimate is actually negative. 
 ``We should be willing'', \citet[31]{King1994} advise, ``to take whatever information we can acquire so long as it helps us learn about the veracity of our theory.''
-In neglecting to examine more than a single survey, NJL reaches a conclusion that is not supported by all of the available evidence.
-
+In neglecting to examine more than a single survey, NJL reaches a conclusion that is not supported by the available evidence.
 
 <<label=t2_replication_each>>==
 # Does any other single dataset yield same result as 2006? no
@@ -439,6 +439,12 @@ Of the six surveys, the only one that yields a statistically significant result 
   \end{tabular}
   \end{footnotesize}
 \end{figure}
+
+Are lower-income citizens living in localities with more income inequality more likely to see themselves as have-nots?
+The NJL analysis of this question, presented in that article's Table 3, is not reproducible.
+The 2006 survey comprises just 1067 white respondents, but those respondents live in 661 counties and the NJL model specifies two random effects per county, yielding over 1300 parameters (see NJL, p.336).
+This is the classic `small-$n$' problem writ large: it is impossible to estimate the model without additional information \citep[see, e.g.,][]{King1994}.
+Figure~\ref{F:t3_pooled} therefore displays the reported results for reference, alongside the results obtained by estimating the model using all six Pew surveys that asked respondents if they identified themselves as among the have-nots.
 
 <<label=t3_replication>>==
 vars_list_t3 <- c("gini_cnty", "income", "gini_cnty:income", "income_cnty",
@@ -515,6 +521,9 @@ The published NJL analysis, purportedly of the 2006 Pew survey, is not reproduci
   \end{footnotesize}
 \end{figure}
 
+Note that the NJL model includes a multiplicative interaction term between county-level income inequality and individual income.
+For this reason, the coefficients of these variables are not interpretable directly; instead, to understand how these variables relate to self-identification as a have-not, their conditional effects must be calculated and plotted \citep[see, e.g.,][]{Brambor2006}.
+Using the \R package \texttt{interplot}, we present these conditional effects in Figure~\ref{F:t3_multi}. 
 
 <<label=t3_inter_gini>>==
 inc_labels <- c("<$10k", "$10-20k", "$20-30k", "$30-40k", "$40-50k",
@@ -703,23 +712,6 @@ There is no support for the conclusion reached in NJL that lower income people a
 \end{figure}
 
 
-%%%% Jungmin here
-
-Regarding the influence of income inequality on awaking the class consciousness, NJL concluded that people with lower income are more likely to identify as ``have-nots''  when they live in contexts of greater income inequality. 
-The main empirical evidence for this argument was a negative and statistically significant interactive term. 
-However, the significance of interactive term is not an appropriate criterion for judging the conditional effect in interactions, regardless the aforementioned selection bias in the data. 
-It only implies the effect of inequality on identifying ``have-nots'' when the income is zero, but it does not offer any direct information about the situation when income is not zero.
-In NJL's measure, there is even no category for zero income; the smallest category is "less than ten thousand."
-In this case, the significant interactive term has even less substantive meaning.
-
-To detect the conditional effect of inequality in the non-zero income conditions, one needs to calcuate the marginal effect of inequality \citep[see more technical details in][]{Brambor2006}. 
-We did the calculation again based on all the avaliable data, controlling for the panel difference with least square fixed effect.
-The result is visualized in the leftest panel of Figure \ref{F:t3_multi}.
-The solid line represents the estimate of the effect of inequality affecting the log likelihood to identify as ``have-nots'' led by income, and the shadow indicates the 95\% conficence intervals. 
-Only when the intervals of a higher inequality does not overlap the intervals of lower inequality can one say the effect of inequality is different from zero, while such pattern was not shown in the plot at all. 
-To interpret this more substantively, we also calculated the predicted probability of identification for people with the lowest, median, and highest income at different inequality levels. 
-The result is presented in the righest panel of Figure \ref{F:t3_multi}, and no significant effect can be identified, either.
-In conclusion, with an approporiate interpretation of the empirical evidence, NJL's argument is actually rejected.
 
 
 
