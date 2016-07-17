@@ -433,7 +433,7 @@ ggsave("figures/t2_by_survey.pdf", plot = sw, width = 6, height = 3)
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 95\% confidence intervals.  
+  & \emph{Notes}: The dots represent the estimated change in the logged odds of believing the United States to be divided into `haves' and `have-nots' for a change of two standard deviations in county income inequality; whiskers represent 95\% confidence intervals.  
 Results for county income inequality from replications of the model presented in NJL Table 2 on data from each of six available surveys conducted in the in the time period examined in that article.  
 Of the six surveys, the only one that yields a statistically significant result is the 2006 survey presented in the article.
   \end{tabular}
@@ -508,7 +508,7 @@ ggsave("figures/t3_pooled.pdf", plot = g3, width = 6, height = 5)
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots indicate estimates; whiskers represent 90\% confidence intervals.
+  & \emph{Notes}: The dots represent the estimated change in the logged odds of self-identifying as a `have-not' for a change of two standard deviations in the independent variable; whiskers represent 90\% confidence intervals corresponding to the one-tailed tests applied in NJL.
 Results obtained by replicating the analysis from NJL Table 3 on pooled data from the six Pew surveys that included the same item conducted in the time period examined in that article.
 The published NJL analysis, purportedly of the 2006 Pew survey, is not reproducible because it includes more parameters than observations; the reported results are depicted here.  
   \end{tabular}
@@ -695,9 +695,9 @@ rm(t3_inter_inc, t3_inter_gini) # discard naively cached objects
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: Dots and solid lines indicate estimates; whiskers and shaded regions represent 95\% confidence intervals.
+  & \emph{Notes}: The dots and solid lines represent the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable; whiskers and shaded regions represent 95\% confidence intervals.
 Income is estimated to have a negative effect on identifying as a have-not that is strong, statistically significant, and larger in magnitude as local income inequality increases.
-There is no support, however, for the conclusion reached in NJL that lower income people are more likely to identify as have-nots when they live in contexts of greater income inequality.
+There is no support for the conclusion reached in NJL that lower income people are more likely to identify as have-nots when they live in contexts of greater income inequality; there is only support for the proposition that those with higher incomes are less likely to do so where inequality is greater.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
