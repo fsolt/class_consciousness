@@ -85,7 +85,7 @@ These questions, however, were not at all unique to the 2006 survey: they were i
 Given the longstanding admonition to maximize the number of observations used to test a theory's implications \citep[see, e.g.,][]{King1994}, this is a surprising oversight.\footnote{\doublespacing It is perhaps even more surprising in light of the fact that one of these additional surveys, Pew's April 2009 Values Survey, was included in NJL's analyses of meritocratic beliefs even though it did \emph{not} ask the same item as other surveys pooled in those analyses \citep[see NJL, p.331;][8]{Solt2016b}.}
 
 To examine whether the choice of data affected the results presented in NJL, we first reproduce Table 2 from that article using the 2006 Pew survey alone, which presents results regarding views of the United States as divided into `haves' and `have-nots.'  
-The NJL reproducibility materials note that the article's authors are themselves unable to reproduce the results exactly \citep{Newman2015a}, though we confirm that the differences between the published results and those obtained are indeed quite small.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
+The NJL reproducibility materials note that the article's authors are themselves unable to reproduce these results exactly \citep{Newman2016}, though we confirm that the differences between the published results and those obtained in this case are indeed quite small.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
 First, although NJL describes its model as including a control for unemployment (p.331), the survey only includes an item regarding \emph{employment} status; that is, the unemployed cannot be distinguished from students, retirees, and others not in the workforce in these data.
 We therefore simply more accurately label this variable as ``Employed.''
 Second, missing data in the survey appear to have been singly imputed in the reproducibility materials using an undocumented procedure.
@@ -416,7 +416,7 @@ t2_by_survey %<>% rbind(t2_res %>% mutate(model = "Pew 2006")) %>%
 	arrange(model) # use 2006 data mi'd separately for consistency w first plot
 
 sw <- secret_weapon(t2_by_survey, "gini_cnty") +
-  theme_bw() + xlab("Coefficient Estimate, County Gini Index") + ylab("") + 
+  theme_bw() + xlab("Coefficient Estimate for County Income Inequality") + ylab("") + 
   relabel_y_axis(c("Oct 2005", "Sept 2006", "July 2007", 
                    "Jan 2008", "Oct 2008", "Apr 2009")) +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + 
@@ -441,10 +441,8 @@ Of the six surveys, the only one that yields a statistically significant result 
 \end{figure}
 
 Are lower-income citizens living in localities with more income inequality more likely to see themselves as have-nots?
-The NJL analysis of this question, presented in that article's Table 3, is not reproducible.
-The 2006 survey comprises just 1067 white respondents, but those respondents live in 661 counties and the NJL model specifies two random effects per county, yielding over 1300 parameters (see NJL, p.336).
-This is the classic `small-$n$' problem writ large: it is impossible to estimate the model without additional information \citep[see, e.g.,][]{King1994}.
-Figure~\ref{F:t3_pooled} therefore displays the reported results for reference, alongside the results obtained by estimating the model using all six Pew surveys that asked respondents if they identified themselves as among the have-nots.
+The NJL analysis of this question, presented in that article's Table 3, is not reproducible very closely even by the article's authors; in recently provided materials, \citet{Newman2016} instead offer six alternate specifications that yield a wide variety of results, none of which support the conclusion that people with even the lowest incomes are more likely to consider themselves have-nots when they live in contexts of higher income inequality.
+Figure~\ref{F:t3_pooled} therefore simply displays the original NJL results for reference, alongside the results obtained by estimating the model using all six Pew surveys that asked respondents if they identified themselves as among the have-nots.
 
 <<label=t3_replication>>==
 vars_list_t3 <- c("gini_cnty", "income", "gini_cnty:income", "income_cnty",
@@ -523,7 +521,13 @@ The published NJL analysis, purportedly of the 2006 Pew survey, is not reproduci
 
 Note that the NJL model includes a multiplicative interaction term between county-level income inequality and individual income.
 For this reason, the coefficients of these variables are not interpretable directly; instead, to understand how these variables relate to self-identification as a have-not, their conditional effects must be calculated and plotted \citep[see, e.g.,][]{Brambor2006}.
-Using the \R package \texttt{interplot}, we present these conditional effects in Figure~\ref{F:t3_multi}. 
+Using the \R package \texttt{interplot} \citep{Solt2015b}, we present these conditional effects in Figure~\ref{F:t3_multi}. 
+
+The left panel of the figure shows that the estimated conditional effect of income is negative and statistically significant across the entire observed range of county income inequality.  
+The center panel, however, shows that the estimated coefficients of income inequality are statistically significant only for those with incomes greater than \$50,000: among those with lower incomes, the estimates do not reach statistical significance.
+The right panel presents predicted probabilities of identifying as a have-not for people with various incomes but otherwise median characteristics across the observed range of income inequality.   
+The large effect of income on self-identification as a have-not is readily evident: otherwise typical people with incomes below \$10,000 are predicted to have about a seven-in-ten chance of so identifying, while their counterparts with incomes over \$150,000 are predicted do so at rates below two in ten.
+But there is no sign that even the very poor are 
 
 <<label=t3_inter_gini>>==
 inc_labels <- c("<$10k", "$10-20k", "$20-30k", "$30-40k", "$40-50k",
@@ -630,7 +634,7 @@ pred_probs <- function(m, var1, var2, var2_vals,
 }
 
 t3_pp <- pred_probs(t3_all, var1 = "gini_cnty", var2 = "income", 
-                    var2_vals = c(1, 5, 9), times = 50, sims = 1000)
+                    var2_vals = c(1, 6, 9), times = 50, sims = 1000)
 
 t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) + 
   geom_line(aes(colour = income)) + 
@@ -641,15 +645,15 @@ t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) +
   theme_bw() + theme(legend.position="none",
         axis.title.y = element_text(size=8)) +
   theme(plot.title = element_text(face="bold")) +
-  geom_text(aes(.40, 79.5, label="<$10k", color="1")) +
-  geom_text(aes(.46, 44, label="$40-50k", color="5")) +
+  geom_text(aes(.40, 79, label="<$10k", color="1")) +
+  geom_text(aes(.46, 36, label="$50-60k", color="6")) +
   geom_text(aes(.52, 2, label=">$150k", color="9")) +
   scale_colour_manual(values = c("grey60", "grey40", "grey5")) +
   scale_fill_manual(values = c("grey60", "grey40", "grey5"))
 ggsave("figures/t3_pp_plot.pdf", plot = t3_pp_plot, width = 7, height = 7)
 @
 
-<<label=t3_multi, dependson=c(-2, -3)>>==
+<<label=t3_multi, dependson=c(-1, -2, -3)>>==
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
     require(grid)
     
