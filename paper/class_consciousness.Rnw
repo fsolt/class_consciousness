@@ -62,6 +62,7 @@ opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=
 % }
 \date{}				
 \maketitle
+
 \vspace{-1in}
 \begin{spacing}{2}
 \begin{abstract}
@@ -77,9 +78,9 @@ Rational-choice arguments have long maintained that, where economic inequality i
 There is reason for skepticism.  
 The path from objective inequality to demands for greater equality is fraught, requiring the disadvantaged to perceive the inequality, understand that it affects their condition, deem it illegitimate, and feel sufficiently outraged to make demands \citet[95]{Dahl1971}.
 Moreover, as \citet[17]{Gaventa1980} notes, where inequality is greater, poorer people are less likely to recognize their situation and embrace a collective identity to struggle against it than to suffer ``a greater susceptibility to the internalization of the values, beliefs, or rules of the game of the powerful as a further adaptive response.''
-In fact, \citet{Kelly2010} provides evidence that, over time, rising inequality in the United States has worked to \emph{reduce} demand for redistribution among lower-income Americans.
+In fact, \citet{Kelly2010} provides powerful evidence that, over time, rising income inequality in the United States has worked to \emph{reduce} demand for redistribution among lower-income Americans.
 
-Nonetheless, a prominent recent study, \citet[hereafter NJL]{Newman2015}, appears to provide new justification for optimism that inequality will prove self-correcting.  
+Nonetheless, a prominent recent study, \citet[hereafter NJL]{Newman2015}, appears to provide new justification for optimism that economic inequality will prove self-correcting.  
 It concludes that mere exposure to high levels of local income inequality prompts those with lower incomes to become more likely to view the United States as divided into haves and have-nots and to see themselves as among the have-nots, that is, to become more likely to achieve a class consciousness vital to contesting the fairness of the economic system and demanding more redistribution.\footnote{\doublespacing NJL also purports to show that lower-income people are more likely to reject, and higher-income people are more likely to accept, the meritocratic ideal that hard work leads to success when living in contexts of greater local income inequality.  
 \citet{Solt2016b}, however, documents how this conclusion is not in fact supported by the results presented in NJL but instead is based on a crucial misinterpretation of a multiplicative interaction term \citep[see][]{Brambor2006}.  
 In an independent replication that brings more and better data to the question, \citet{Solt2016b} finds that those with lower incomes are actually \emph{less} likely to reject meritocracy where income inequality is greater.} 
@@ -377,7 +378,7 @@ The statistically significant result for county income inequality in the 2006 su
 \end{figure}
 
 To examine whether the choice of data affected the results presented in NJL, we first reproduce Table 2 from that article using the 2006 Pew survey alone, which presents results regarding views of the United States as divided into `haves' and `have-nots.'  
-The NJL reproducibility materials note that the article's authors are themselves unable to reproduce these results exactly \citep{Newman2016}, though we confirm that the differences between the published results and those obtained in this case are indeed quite small.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
+The NJL reproducibility materials note that the article's authors are themselves unable to reproduce these results exactly \citep{Newman2016}, though we confirm that the differences between the published results and those obtained  are indeed quite small in this case.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
 First, although NJL describes its model as including a control for unemployment (p.331), the survey only includes an item regarding \emph{employment} status; that is, the unemployed cannot be distinguished from students, retirees, and others not in the workforce in these data.
 We therefore simply more accurately label this variable as ``Employed.''
 Second, missing data in the survey appear to have been singly imputed in the reproducibility materials using an undocumented procedure.
@@ -719,40 +720,14 @@ The center panel, however, shows that the estimated coefficients of income inequ
 The right panel presents predicted probabilities of identifying as a have-not for people with various incomes but otherwise median characteristics across the observed range of income inequality.   
 
 The large effect of income on self-identification as a have-not is readily evident: otherwise typical people with incomes below \$10,000 are predicted to have about a seven-in-ten chance of so identifying, while their counterparts with incomes over \$150,000 are predicted do so at rates below two in ten.
-But it is equally evident that, among those with the lowest incomes, there is no sign that local income inequality ``raises the salience of one’s own relative position in the economic hierarchy'' as NJL (p.336) argued.
+But it is equally evident that, among those with even the lowest incomes, there is no sign that local income inequality ``raises the salience of one’s own relative position in the economic hierarchy'' as NJL (p.336) argued.
 Their predicted probability of adopting a class identity so measured is flat.
 
-Do contexts of greater income inequality spur the disadvantaged to achieve a class consciousness vital to contesting the fairness of the economic system and demanding more redistribution?
-One prominent recent study, \citet{Newman2015}, argues that exposure to higher levels of local income inequality lead low-income people to view the United States as divided into haves and have-nots and to see themselves as among the have-nots, that is, to become more likely to achieve such a class consciousness.  
+The NJL claim that class consciousness is spontaneously generated among those with low incomes by high levels of income inequality has important political implications. 
+If it were true, advocates for greater redistribution could remain subdued, secure in the knowledge that the votes for their preferred policies would soon materialize.
+The fact that the available evidence provides no support for this claim, on the other hand, suggests that if change is to occur, it will only result from concerted effort, from the difficult and much-constrained work of organization and mobilization.
+Those who favor a more egalitarian society have no grounds for complacency.
 
-By neglecting to consider similar available surveys, NJL reaches a conclusion that is not supported by the available evidence.
-
-
-
-
-
-
-<<label=additional_analyses>>==
-# Cross-classified model with level for survey makes no difference
-# t2_all2 <- with(hhn_mi, 
-#                glmer(formula = div_hhn~gini_cnty+
-#                          income_cnty+black_cnty+perc_bush04+pop_cnty+
-#                          income+educ+age+male+union+emp+partyid+ideo+attend+
-#                          (1|fips) + (1|survey), family=binomial(link="logit")))
-# t2_all2_res <- format_mi_results(t2_all2)
-# summary(t2_all2_res)
-
-
-# No sign of interaction either: gini_cnty not significant at any income
-# t2_all3 <- with(hhn_mi, 
-#                 glmer(formula = div_hhn~gini_cnty+
-#                           income_cnty+black_cnty+perc_bush04+pop_cnty+
-#                           income+educ+age+male+union+emp+partyid+ideo+attend+gini_cnty:income +
-#                           (1|fips) + (1|survey), family=binomial(link="logit")))
-# t2_all3_res <- format_mi_results(t2_all3)
-# summary(t2_all3_res)
-# interplot(t2_all3, "gini_cnty", "income")
-@
 
 \end{spacing}
 
