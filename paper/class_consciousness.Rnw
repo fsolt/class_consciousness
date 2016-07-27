@@ -76,7 +76,7 @@ One of the most important questions underlying recent research on economic inequ
 Rational-choice arguments have long maintained that, where economic inequality is higher, the benefit of more redistributive policies to the median voter and to those with below-median incomes is greater, so they will demand and achieve the adoption of higher taxes and more government spending to ameliorate unequal conditions between those with higher and lower incomes \cite[see, e.g.,][]{Meltzer1981}.
 
 There is reason for skepticism.  
-The path from objective inequality to demands for greater equality is fraught, requiring the disadvantaged to perceive the inequality, understand that it affects their condition, deem it illegitimate, and feel sufficiently outraged to make demands \citet[95]{Dahl1971}.
+The path from objective inequality to demands for greater equality is fraught, requiring the disadvantaged to perceive the inequality, understand that it affects their condition, deem it illegitimate, and feel sufficiently outraged to make demands \citep[95]{Dahl1971}.
 Moreover, as \citet[17]{Gaventa1980} notes, where inequality is greater, poorer people are less likely to recognize their situation and embrace a collective identity to struggle against it than to suffer ``a greater susceptibility to the internalization of the values, beliefs, or rules of the game of the powerful as a further adaptive response.''
 In fact, \citet{Kelly2010} provides powerful evidence that, over time, rising income inequality in the United States has worked to \emph{reduce} demand for redistribution among lower-income Americans.
 
@@ -88,7 +88,8 @@ In an independent replication that brings more and better data to the question, 
 NJL reaches this conclusion on the basis of analyses of the September 2006 Pew News Interest Index Survey, which it describes as ``containing a unique set of questions tapping perceptions of economic hierarchy and inequality and respondents’ perception of their own position within such a hierarchy'' (p.336).  
 %These questions asked, first, whether respondents thought of the United States as being divided into `haves' and `have-nots,' and second, of which of the two groups, the `haves' and the `have-nots,' they considered themselves members.
 These questions, however, were not at all unique to the 2006 survey: they were in fact included in no fewer than six Pew surveys during the period examined in the study, 2005 to 2009. 
-Given the longstanding admonition to maximize the number of observations used to test a theory's implications \citep[see, e.g.,][]{King1994}, this is a surprising oversight.\footnote{\doublespacing It is perhaps even more surprising in light of the fact that one of these additional surveys, Pew's April 2009 Values Survey, was included in NJL's analyses of meritocratic beliefs even though it did \emph{not} ask the same item as other surveys pooled in those analyses \citep[see NJL, p.331;][8]{Solt2016b}.}
+Given the longstanding admonition to maximize the number of observations used to test a theory's implications \citep[see, e.g.,][]{King1994}, this is a surprising oversight, one that may be expected to affect the conclusions reached.\footnote{\doublespacing It is perhaps even more surprising in light of the fact that one of these additional surveys, Pew's April 2009 Values Survey, was included in NJL's analyses of meritocratic beliefs even though it did \emph{not} ask the same item as other surveys pooled in those analyses \citep[see NJL, p.331;][8]{Solt2016b}.}
+
 
 <<label=setup>>==
 library(checkpoint)
@@ -377,20 +378,22 @@ The statistically significant result for county income inequality in the 2006 su
   \end{footnotesize}
 \end{figure}
 
-To examine whether the choice of data affected the results presented in NJL, we first reproduce Table 2 from that article using the 2006 Pew survey alone, which presents results regarding views of the United States as divided into `haves' and `have-nots.'  
-The NJL reproducibility materials note that the article's authors are themselves unable to reproduce these results exactly \citep{Newman2016}, though we confirm that the differences between the published results and those obtained  are indeed quite small in this case.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
+To examine the extent to which the choice of data affect the results presented in NJL, we first reproduce Table 2 from that article using the 2006 Pew survey alone, which presents results regarding views of the United States as divided into `haves' and `have-nots.'  
+The NJL reproducibility materials note that the article's authors are themselves unable to reproduce these results exactly \citep{Newman2016}, though we confirm, in this case, that the differences between the published results and those we obtained are indeed quite small.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
 First, although NJL describes its model as including a control for unemployment (p.331), the survey only includes an item regarding \emph{employment} status; that is, the unemployed cannot be distinguished from students, retirees, and others not in the workforce in these data.
-We therefore simply more accurately label this variable as ``Employed.''
+We therefore simply more accurately label this variable as ``Employed;'' this of course does not change the results, only their interpretation.
 Second, missing data in the survey appear to have been singly imputed in the reproducibility materials using an undocumented procedure.
-Following the advice that \emph{multiple} imputation is the best way to preserve observations with missing data without understating the uncertainty due to missing values \citep[see, e.g.,][]{Rubin1987}, we use the \R package \texttt{mi} to deal with this issue \citep{Su2011}.  Neither of these changes yield substantial differences from the results reported in NJL.}
+Following the advice that \emph{multiple} imputation is the best way to preserve observations with missing data without understating the uncertainty due to missing values \citep[see, e.g.,][]{Rubin1987}, we use the \R package \texttt{mi} to deal with this issue \citep{Su2011}.  
+This change did not yield substantial differences from the results reported in NJL.}
 Next, we replicate this analysis using all six of the available Pew surveys pooled together.\footnote{\doublespacing We note that items for three control variables were not asked in all six surveys: union membership (omitted from the July 2007 and October 2008 surveys), employment (July 2007), and church attendance (October 2008).  To deal with this issue, we pooled the surveys before multiply imputing the missing data \citep[see][]{Gelman1998}.}  
 In both cases, we follow NJL and examine only views among white respondents.  
-Figure~\ref{F:t2_pooled} displays the results as a dot-and-whisker plot \citep[see][]{Kastellec2007, Solt2015c}, with the dots representing the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable and the whiskers representing the 95\% confidence intervals of these estimates. 
 
+Figure~\ref{F:t2_pooled} displays the results as a dot-and-whisker plot \citep[see][]{Kastellec2007, Solt2015c}, with the dots representing the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable and the whiskers representing the 95\% confidence intervals of these estimates. 
 The upper, lighter lines depict the results obtained using only the 2006 survey as in NJL; the lower, darker lines are those using all of the available surveys.
 There are many similarities: in both sets of results, most of the estimates do not reach statistical significance, but Republicans and conservatives are less likely to view the United States as divided and union members are more so.
 The differences, however, are telling.
-The counterintuitive finding in the 2006 data that people in counties where George W. Bush won a larger share of the vote in 2004 were more likely to see a divide between haves and have-nots evaporates when all of the available surveys are examined, and the surprising null result for income gives way to the expected strongly negative relationship.
+The counterintuitive finding in the 2006 data that people in counties where George W. Bush won a larger share of the vote in 2004 were more likely to see a divide between haves and have-nots evaporates when all of the available surveys are examined.
+Also, the surprising null result for income gives way to the expected strongly negative relationship.
 Most importantly, while the estimate for the context of local income inequality in the 2006 data is positive and statistically significant, this evidence that ``income inequality and relative economic comparisons will become more salient among citizens residing in high- than low-inequality contexts'' (NJL, p.337) disappears when all of the available surveys are included in the sample.
 
 Moreover, consider Figure~\ref{F:t2_by_survey}.  
