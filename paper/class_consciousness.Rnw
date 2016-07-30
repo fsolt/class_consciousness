@@ -43,7 +43,7 @@ library(knitr)
 opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=FALSE, results='hide')
 @
 
-\title{Economic Inequality and\\ Class Consciousness in the United States\thanks{Revision history and the materials needed to reproduce the analyses of this paper can be found \href{https://github.com/fsolt/class_consciousness}{on Github here}.}}
+\title{On Economic Inequality and Class Consciousness}%\thanks{Revision history and the materials needed to reproduce the analyses of this paper can be found \href{https://github.com/fsolt/class_consciousness}{on Github here}.}}
 % \author{
 %   Frederick Solt\\
 %   \href{mailto:frederick-solt@uiowa.edu}{frederick-solt@uiowa.edu}
