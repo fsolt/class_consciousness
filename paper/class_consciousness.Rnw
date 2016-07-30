@@ -78,7 +78,7 @@ Rational-choice arguments have long maintained that, where economic inequality i
 There is reason for skepticism.  
 The path from objective inequality to demands for greater equality is fraught, requiring the disadvantaged to perceive the inequality, understand that it affects their condition, deem it illegitimate, and feel sufficiently outraged to make demands \citep[95]{Dahl1971}.
 Moreover, as \citet[17]{Gaventa1980} notes, where inequality is greater, poorer people are less likely to recognize their situation and embrace a collective identity to struggle against it than to suffer ``a greater susceptibility to the internalization of the values, beliefs, or rules of the game of the powerful as a further adaptive response.''
-In fact, \citet{Kelly2010} provides powerful evidence that, over time, rising income inequality in the United States has worked to \emph{reduce} demand for redistribution among lower-income Americans.
+In fact, \citet{Kelly2010} provides powerful evidence that, over time, rising income inequality in the United States has worked to \emph{reduce} the demand for redistribution among lower-income Americans.
 
 Nonetheless, a prominent recent study, \citet[hereafter NJL]{Newman2015}, appears to provide new justification for optimism that economic inequality will prove self-correcting.  
 It concludes that mere exposure to high levels of local income inequality prompts those with lower incomes to become more likely to view the United States as divided into haves and have-nots and to see themselves as among the have-nots, that is, to become more likely to achieve a class consciousness vital to contesting the fairness of the economic system and demanding more redistribution.\footnote{\doublespacing NJL also purports to show that lower-income people are more likely to reject, and higher-income people are more likely to accept, the meritocratic ideal that hard work leads to success when living in contexts of greater local income inequality.  
@@ -389,7 +389,7 @@ Next, we replicate this analysis using all six of the available Pew surveys pool
 In both cases, we follow NJL and examine only views among white respondents.  
 
 Figure~\ref{F:t2_pooled} displays the results as a dot-and-whisker plot \citep[see][]{Kastellec2007, Solt2015c}, with the dots representing the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable and the whiskers representing the 95\% confidence intervals of these estimates. 
-The upper, lighter lines depict the results obtained using only the 2006 survey as in NJL; the lower, darker lines are those using all of the available surveys.
+The upper, lighter lines depict the results obtained using only the 2006 survey as in NJL; the lower, darker lines are those obtained using all of the available surveys.
 There are many similarities: in both sets of results, most of the estimates do not reach statistical significance, but Republicans and conservatives are less likely to view the United States as divided and union members are more so.
 The differences, however, are telling.
 The counterintuitive finding in the 2006 data that people in counties where George W. Bush won a larger share of the vote in 2004 were more likely to see a divide between haves and have-nots evaporates when all of the available surveys are examined.
@@ -398,9 +398,9 @@ Most importantly, while the estimate for the context of local income inequality 
 
 Moreover, consider Figure~\ref{F:t2_by_survey}.  
 It is a ``secret weapon'' plot \citep[see][198]{Gelman2008} that displays the result for income inequality when the NJL model is fit to each of the six available Pew surveys separately.
-The coefficient for income inequality is \emph{only} estimated to be positive and statistically significant in the 2006 survey employed in NJL. 
+The coefficient for income inequality is estimated to be positive and statistically significant \emph{only in the 2006 survey employed in NJL}. 
 Not one of the other five datasets yields a statistically significant coefficient, and in three of them the point estimate is actually negative. 
-``We should be willing'', \citet[31]{King1994} advise, ``to take whatever information we can acquire so long as it helps us learn about the veracity of our theory.''
+``We should be willing'', \citet[31]{King1994} advises, ``to take whatever information we can acquire so long as it helps us learn about the veracity of our theory.''
 In neglecting to examine more than a single survey, NJL reaches a conclusion that is not supported by the available evidence.
 
 <<label=t2_replication_each>>==
@@ -450,7 +450,7 @@ Of the six surveys, the only one that yields a statistically significant result 
 \end{figure}
 
 Are lower-income citizens living in localities with more income inequality more likely to see themselves as have-nots?
-The NJL analysis of this question, presented in that article's Table 3, is not reproducible very closely even by the article's authors; in recently provided materials, \citet{Newman2016} instead offer six alternate specifications that yield a wide variety of results, none of which support the conclusion that people with even the lowest incomes are more likely to consider themselves have-nots when they live in contexts of higher income inequality.
+The NJL analysis of this question, presented in that article's Table 3, cannot be reproduced very closely even by the article's authors; in recently provided materials, \citet{Newman2016} instead offer six alternate specifications that yield a wide variety of results, none of which support the conclusion that people with even the lowest incomes are more likely to consider themselves have-nots when they live in contexts of higher income inequality.
 Figure~\ref{F:t3_pooled} therefore simply displays the original NJL results for reference, alongside the results obtained by estimating the model using all six Pew surveys that asked respondents if they identified themselves as among the have-nots.
 
 <<label=t3_replication>>==
