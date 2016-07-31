@@ -649,7 +649,7 @@ t3_pp_plot <- ggplot(t3_pp, aes(x = gini_cnty, y = est, group = income)) +
         axis.title.y = element_text(size=8)) +
   theme(plot.title = element_text(face="bold")) +
   geom_text(aes(.40, 79, label="<$10k", color="1")) +
-  geom_text(aes(.46, 36, label="$50-60k", color="6")) +
+  geom_text(aes(.46, 36, label="$50-75k", color="6")) +
   geom_text(aes(.52, 2, label=">$150k", color="9")) +
   scale_colour_manual(values = c("grey60", "grey40", "grey5")) +
   scale_fill_manual(values = c("grey60", "grey40", "grey5"))
