@@ -43,7 +43,7 @@ library(knitr)
 opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=FALSE, results='hide')
 @
 
-\title{On Economic Inequality and Class Consciousness}%\thanks{Revision history and the materials needed to reproduce the analyses of this paper can be found \href{https://github.com/fsolt/class_consciousness}{on Github here}.}}
+\title{Economic Inequality and Class Consciousness}%\thanks{Revision history and the materials needed to reproduce the analyses of this paper can be found \href{https://github.com/fsolt/class_consciousness}{on Github here}.}}
 % \author{
 %   Frederick Solt\\
 %   \href{mailto:frederick-solt@uiowa.edu}{frederick-solt@uiowa.edu}
@@ -722,7 +722,7 @@ The left panel of the figure shows that the estimated conditional effect of inco
 The center panel, however, shows that the estimated coefficients of income inequality are statistically significant only for those with incomes greater than \$50,000: among those with lower incomes, the estimates do not reach statistical significance.
 The right panel presents predicted probabilities of identifying as a have-not for people with various incomes but otherwise median characteristics across the observed range of income inequality.   
 
-The large effect of income on self-identification as a have-not is readily evident: otherwise typical people with incomes below \$10,000 are predicted to have about a seven-in-ten chance of so identifying, while their counterparts with incomes over \$150,000 are predicted do so at rates below two in ten.
+The large effect of income on self-identification as a have-not is readily evident in these predicted probabilities: otherwise typical people with incomes below \$10,000 are predicted to have about a seven-in-ten chance of so identifying, while their counterparts with incomes over \$150,000 are predicted do so at rates below two in ten.
 But it is equally evident that, among those with even the lowest incomes, there is no sign that local income inequality ``raises the salience of one’s own relative position in the economic hierarchy'' as NJL (p.336) argued.
 Their predicted probability of adopting a class identity so measured is flat.
 
