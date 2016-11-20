@@ -379,7 +379,7 @@ The statistically significant result for county income inequality in the 2006 su
 \end{figure}
 
 To examine the extent to which the choice of data affect the results presented in NJL, we first reproduce Table 2 from that article using the 2006 Pew survey alone, which presents results regarding views of the United States as divided into `haves' and `have-nots.'  
-The NJL reproducibility materials note that the article's authors are themselves unable to reproduce these results exactly \citep{Newman2016}, though we confirm, in this case, that the differences between the published results and those that can be reproduced are indeed quite small.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
+The NJL reproducibility materials do not themselves reproduce these results exactly \citep{Newman2016}, though we confirm, in this case, that the differences between the published results and those that can be reproduced are indeed quite small.\footnote{\doublespacing In reproducing the results directly from the original 2006 survey, we discovered two additional minor issues.
 First, although NJL describes its model as including a control for unemployment (p.331), the survey only includes an item regarding \emph{employment} status; that is, the unemployed cannot be distinguished from students, retirees, and others not in the workforce in these data.
 We therefore simply more accurately label this variable as ``Employed;'' this of course does not change the results, only their interpretation.
 Second, missing data in the survey appear to have been singly imputed in the reproducibility materials using an undocumented procedure.
