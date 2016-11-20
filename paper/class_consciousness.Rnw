@@ -449,7 +449,7 @@ Of the six surveys, the only one that yields a statistically significant result 
   \end{footnotesize}
 \end{figure}
 
-Are lower-income citizens living in localities with more income inequality more likely to see themselves as have-nots?
+NJL also seeks to address if lower-income citizens living in localities with more income inequality are more likely to see themselves as have-nots.
 The NJL analysis of this question, presented in that article's Table 3, cannot be reproduced very closely even by the article's authors; in recently provided materials, \citet{Newman2016} instead offer six alternate specifications that yield a wide variety of results, none of which support the conclusion that people with even the lowest incomes are more likely to consider themselves have-nots when they live in contexts of higher income inequality.
 Figure~\ref{F:t3_pooled} therefore simply displays the original NJL results for reference, alongside the results obtained by estimating the model using all six Pew surveys that asked respondents if they identified themselves as among the have-nots.
 
