@@ -74,6 +74,7 @@ There is no evidence that higher levels of income inequality produce greater cla
 \vspace{5mm}
 Keywords: economic inequality, class consciousness, replication crisis, reproducibility
 \newpage
+
 One of the most important questions underlying recent research on economic inequality and democracy is whether inequality in democratic contexts is self-correcting.  
 Rational-choice arguments have long maintained that, where economic inequality is higher, the benefit of more redistributive policies to the median voter and to those with below-median incomes is greater, so they will demand and achieve the adoption of higher taxes and more government spending to ameliorate unequal conditions between those with higher and lower incomes \cite[see, e.g.,][]{Meltzer1981}.
 
