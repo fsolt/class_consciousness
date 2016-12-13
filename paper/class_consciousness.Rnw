@@ -520,7 +520,7 @@ ggsave("figures/t3_pooled.pdf", plot = g3, width = 6, height = 5)
   \caption{Local Inequality and Self-Identification as a `Have-Not': Results Using All Available Data}
   \label{F:t3_pooled}
   \begin{center}
-    \includegraphics[width=5.25in]{figures/t3_pooled.pdf}
+    \includegraphics[width=4.4in]{figures/t3_pooled.pdf}
   \end{center}
   \begin{footnotesize}
   \begin{tabular}{p{.1in} p{6.1in}}
