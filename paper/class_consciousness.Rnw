@@ -71,9 +71,10 @@ One prominent recent study, \citet{Newman2015}, argues that simple exposure to h
 Here, we show that this sanguine conclusion is at best supported only in analyses of the single survey presented in that study.
 There is no evidence that higher levels of income inequality produce greater class consciousness among those with low incomes in other similar but neglected surveys.
 \end{abstract}
-\vspace{5mm}
-Keywords: economic inequality, class consciousness, replication crisis, reproducibility
+
+\emph{Keywords}: economic inequality, class consciousness, replication crisis, reproducibility
 \newpage
+
 One of the most important questions underlying recent research on economic inequality and democracy is whether inequality in democratic contexts is self-correcting.  
 Rational-choice arguments have long maintained that, where economic inequality is higher, the benefit of more redistributive policies to the median voter and to those with below-median incomes is greater, so they will demand and achieve the adoption of higher taxes and more government spending to ameliorate unequal conditions between those with higher and lower incomes \cite[see, e.g.,][]{Meltzer1981}.
 
@@ -95,7 +96,7 @@ Given the longstanding admonition to maximize the number of observations used to
 
 <<label=setup>>==
 library(checkpoint)
-checkpoint("2016-07-15")
+checkpoint("2016-12-10")
 
 library(codetools)
 library(readr)
@@ -387,8 +388,8 @@ We therefore simply more accurately label this variable as ``Employed;'' this of
 Second, missing data in the survey appear to have been singly imputed in the reproducibility materials using an undocumented procedure.
 Following the advice that \emph{multiple} imputation is the best way to preserve observations with missing data without understating the uncertainty due to missing values \citep[see, e.g.,][]{Rubin1987}, we use the \R package \texttt{mi} to deal with this issue \citep{Su2011}.  
 This change did not yield substantial differences from the results reported in NJL.}
-Next, we replicate this analysis using all six of the available Pew surveys pooled together.\footnote{\doublespacing We note that items for three control variables were not asked in all six surveys: union membership (omitted from the July 2007 and October 2008 surveys), employment (July 2007), and church attendance (October 2008).  To deal with this issue, we pooled the surveys before multiply imputing the missing data \citep[see][]{Gelman1998}.}  
-In both cases, we follow NJL measuring the economic ineqiuality with the county level gini coefficients and examine only views among white respondents.\footnote{See theoretical discussions of these choices in \citet[332, 334]{Newman2016}.}  
+Next, we replicate this analysis using all six of the available Pew surveys pooled together.\footnote{\doublespacing Items for three control variables were not asked in all six surveys: union membership (omitted in July 2007 and October 2008), employment (July 2007), and church attendance (October 2008).  To deal with this issue, we pooled the surveys before multiply imputing the missing data \citep[see][]{Gelman1998}.}  
+In both cases, we follow NJL and examine only views among white respondents.\footnote{\doublespacing We make no judgment here on NJL's argument that white people are particularly sensitive to economic inequality (p.335-336), but restrict our analysis to white respondents to provide the most favorable test of the article's claims.}  
 
 Figure~\ref{F:t2_pooled} displays the results as a dot-and-whisker plot \citep[see][]{Kastellec2007, Solt2015c}, with the dots representing the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable and the whiskers representing the 95\% confidence intervals of these estimates. 
 The upper, lighter lines depict the results obtained using only the 2006 survey as in NJL; the lower, darker lines are those obtained using all of the available surveys.
@@ -451,8 +452,8 @@ Of the six surveys, the only one that yields a statistically significant result 
   \end{footnotesize}
 \end{figure}
 
-NJL also seeks to address if lower-income citizens living in localities with more income inequality are more likely to see themselves as have-nots.
-The NJL analysis of this question, presented in that article's Table 3, cannot be reproduced very closely even by the article's authors; in recently provided materials, \citet{Newman2016} instead offer six alternate specifications that yield a wide variety of results, none of which support the conclusion that people with even the lowest incomes are more likely to consider themselves have-nots when they live in contexts of higher income inequality.
+NJL also seeks to address whether lower-income citizens living in localities with more income inequality are more likely to see themselves as have-nots.
+Its analysis of this question, presented in that article's Table 3, cannot be reproduced very closely even by the article's authors; in recently provided materials, \citet{Newman2016} instead offer six alternate specifications that yield a wide variety of results, none of which support the conclusion that people with even the lowest incomes are more likely to consider themselves have-nots when they live in contexts of higher income inequality.
 Figure~\ref{F:t3_pooled} therefore simply displays the original NJL results for reference, alongside the results obtained by estimating the model using all six Pew surveys that asked respondents if they identified themselves as among the have-nots.
 
 <<label=t3_replication>>==
