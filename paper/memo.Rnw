@@ -1,0 +1,81 @@
+\documentclass[12pt]{article}
+%\usepackage{fullpage}
+
+\usepackage{graphicx}        % Enable graphics commands
+\usepackage{lscape}		% Enable landscape with \begin{landscape} until \end{landscape}
+\usepackage{natbib}			% Enable citation commands \citep{}, \citet{}, etc.
+\bibpunct{(}{)}{;}{a}{}{,}		% Formatting for in-text citations
+\usepackage{setspace}		% Enable double-spacing with \begin{spacing}{2} until \end{spacing}.
+\usepackage[utf8]{inputenc} 	% Enable utf8 characters, i.e., accents without coding--just type them in.
+\usepackage[english]{babel}	% English hyphenation and alphabetization.  Other languages available.
+\usepackage{dcolumn}        % For decimal-aligned stargazer/texreg output.
+\usepackage[colorlinks=true, urlcolor=blue, citecolor=black, linkcolor=black]{hyperref} % Include hyperlinks with the \url and \href commands.
+\setlength{\tabcolsep}{1pt}	% Make tables slightly narrower by reducing space between columns.
+\usepackage{afterpage}
+\usepackage{hanging}
+\usepackage[margin=1in]{geometry}
+
+\renewcommand\floatpagefraction{.9}	% These commands allow larger tables and graphics to fit
+\renewcommand\topfraction{.9}		% on a page when default settings would complain.
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+\begin{document}
+
+\title{Economic Inequality and Class Consciousness}
+\author{
+  Memo to the Editor
+}
+\date{}
+\maketitle
+
+Thank you very much for the opportunity to publish our work in the \emph{Journal of Politics}.  We have made the following revisions to the paper in light of the reviewers' very helpful suggestions.\\
+
+\textbf{Reviewer 1}
+\begin{itemize}
+
+\item ``First, while I appreciate page constraints I do think it would broaden the appeal of even this short article if the author did include some references to earlier works on false consciousness, perhaps even Marx or Engels.''
+
+We followed your recommendation and skipped this one.
+
+\item ``Second, this was something the authors did in the original article, but why limit the analysis to white respondents only? This should be explained in a footnote.''
+
+We added an explanatory footnote at page 5.
+
+\item ``Third, why do wealthy people become more `class conscious' in response to greater inequality? Again, I realize space constraints are severe but at least speculate on the difference. Is it that the wealthy actually have more information?''
+
+Given the space constraints, we decline the reviewer's invitation to elaborate on this, though this pattern is consistent with theory we have published elsewhere.
+
+\item ``Fourth, how is income inequality measured? I know this from looking at the NJL article, but this should certainly be explained somewhere. There are different ways to measure inequality, which one was used? Perhaps I missed it but I cannot nd an explanation of how inequality is measured in this article.''
+
+We added a brief description at page 5.
+
+\end{itemize}
+
+\newpage
+\textbf{Reviewer 2}
+\begin{itemize}
+
+\item ``I was surprised on p.3 which states that NJL could not reproduce their own results. Indeed, NJL's readme file states, `Further, we have not been able to exactly replicate the estimates reported in Table 3.' However, I think the text as currently written is misleading because NJL were able to replicate their Table 2, which is the key point of emphasis on p.3. I think the wording should be revised to clarify this point.''
+
+This was a good catch. We revised accordingly.
+
+\item ``The middle of p.6 addresses a second aspect of the NJL paper. I think this should be clarified. Perhaps starting the paragraph with, `Another important question that NJL ask is \ldots .' I apologize for such a pedantic suggestion, but I think clarifying that the analysis is shifting would be really helpful.''
+
+We revised this line as well, now at the top of page 7.
+
+\item ``Is there a reason that Figure 3 uses 90\% CIs and Figures 1 \& 2 uses 95\% Cis? It seems like they all should be 95\%.''
+
+We now explain in the figure's caption that the 90\% confidence interval corresponds to the one-tailed 95\% test employed in NJL.
+
+\end{itemize}
+
+Thank you again for the opportunity to publish our work in the \emph{Journal of Politics}.
+
+Best regards,
+Frederick Solt, Yue Hu, Kevan Hudson, Jungmin Song, and Erico Yu
+
+\end{document}
