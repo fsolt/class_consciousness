@@ -63,10 +63,6 @@ opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=
 \date{}
 \maketitle
 
-\thispagestyle{empty}
-\setcounter{page}{0}
-\newpage
-
 \begin{spacing}{2}
 \begin{abstract}
 Do contexts of greater income inequality spur the disadvantaged to achieve a class consciousness vital to contesting the fairness of the economic system and demanding more redistribution?
@@ -77,7 +73,7 @@ There is no evidence that higher levels of income inequality produce greater cla
 
 \emph{Keywords}: economic inequality, class consciousness, replication crisis, reproducibility
 
-\emph{Short Title}: Economic Inequality and Class Consciousness
+%\emph{Short Title}: Economic Inequality and Class Consciousness
 
 \thispagestyle{empty}
 \setcounter{page}{0}
