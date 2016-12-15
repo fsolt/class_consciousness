@@ -73,9 +73,11 @@ We now explain in the figure's caption that the 90\% confidence interval corresp
 
 \end{itemize}
 
-We have also formatted the paper to the \emph{JOP} guidelines and submitted reproducibility materials to the \emph{JOP} Dataverse.  Thank you again for the opportunity to publish our work in the \emph{Journal of Politics}.
+\noindent We have also formatted the paper to the \emph{JOP} guidelines, submitted reproducibility materials to the journal's Dataverse, and signed the publication agreement.  Thank you again for the opportunity to publish our work in the \emph{Journal of Politics}.\\
+\\
 
-Best regards,
+\noindent Best regards,\\
+\\
 Frederick Solt, Yue Hu, Kevan Hudson, Jungmin Song, and Erico Yu
 
 \end{document}
