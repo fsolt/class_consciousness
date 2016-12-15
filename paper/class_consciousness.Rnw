@@ -63,7 +63,10 @@ opts_chunk$set(concordance=TRUE, cache=TRUE, warning=FALSE, message=FALSE, echo=
 \date{}
 \maketitle
 
-%\vspace{-1in}
+\thispagestyle{empty}
+\setcounter{page}{0}
+\newpage
+
 \begin{spacing}{2}
 \begin{abstract}
 Do contexts of greater income inequality spur the disadvantaged to achieve a class consciousness vital to contesting the fairness of the economic system and demanding more redistribution?
@@ -73,6 +76,11 @@ There is no evidence that higher levels of income inequality produce greater cla
 \end{abstract}
 
 \emph{Keywords}: economic inequality, class consciousness, replication crisis, reproducibility
+
+\emph{Short Title}: Economic Inequality and Class Consciousness
+
+\thispagestyle{empty}
+\setcounter{page}{0}
 \newpage
 
 One of the most important questions underlying recent research on economic inequality and democracy is whether inequality in democratic contexts is self-correcting.  
@@ -373,10 +381,9 @@ ggsave("figures/t2_pooled.pdf", plot = g, width = 6, height = 5)
     \includegraphics[width=5.25in]{figures/t2_pooled.pdf}
   \end{center}
   \begin{footnotesize}
-  \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: The dots represent the estimated change in the logged odds of believing the United States to be divided into `haves' and `have-nots' for a change of two standard deviations in the independent variable; the whiskers represent the 95\% confidence intervals of these estimates. 
-Results from replications of the model presented in Table 2 of \citet{Newman2015} on the 2006 Pew survey analyzed in that article and on pooled data from the six Pew surveys that included the same item and were conducted in the time period the article examines.
-The statistically significant result for county income inequality in the 2006 survey presented in that article is not evident when all of the available data are examined.
+  \begin{tabular}{p{6.5in}}
+  \doublespacing \emph{Notes}: The dots represent the estimated change in the logged odds of believing the United States to be divided into `haves' and `have-nots' for a change of two standard deviations in the independent variable; the whiskers represent the 95\% confidence intervals of these estimates. 
+The statistically significant result for county income inequality in the 2006 survey presented in Table 2 of \citet{Newman2015} is not evident when all of the available data are examined.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -444,10 +451,9 @@ ggsave("figures/t2_by_survey.pdf", plot = sw, width = 6, height = 3)
     \includegraphics[width=5.25in]{figures/t2_by_survey.pdf}
   \end{center}
   \begin{footnotesize}
-  \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: The dots represent the estimated change in the logged odds of believing the United States to be divided into `haves' and `have-nots' for a change of two standard deviations in county income inequality; whiskers represent 95\% confidence intervals.  
-Results for county income inequality from replications of the model presented in NJL Table 2 on data from each of six available surveys conducted in the in the time period examined in that article.  
-Of the six surveys, the only one that yields a statistically significant result is the 2006 survey presented in the article.
+  \begin{tabular}{p{6.5in}}
+  \doublespacing \emph{Notes}: Dots represent the estimated change in the logged odds of believing the United States to be divided into `haves' and `have-nots' for a change of two standard deviations in county income inequality; whiskers represent 95\% confidence intervals.  
+The only one of the six available surveys conducted in the time period NJL examines that yields a statistically significant result is the 2006 survey that article presents.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -520,13 +526,11 @@ ggsave("figures/t3_pooled.pdf", plot = g3, width = 6, height = 5)
   \caption{Local Inequality and Self-Identification as a `Have-Not': Results Using All Available Data}
   \label{F:t3_pooled}
   \begin{center}
-    \includegraphics[width=4.4in]{figures/t3_pooled.pdf}
+    \includegraphics[width=5in]{figures/t3_pooled.pdf}
   \end{center}
   \begin{footnotesize}
-  \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: The dots represent the estimated change in the logged odds of self-identifying as a `have-not' for a change of two standard deviations in the independent variable; whiskers represent 90\% confidence intervals corresponding to the one-tailed tests applied in NJL.
-Results obtained by replicating the analysis from NJL Table 3 on pooled data from the six Pew surveys that included the same item conducted in the time period examined in that article.
-The published NJL analysis, purportedly of the 2006 Pew survey, is not reproducible even by its authors; the reported results are depicted here.  
+  \begin{tabular}{p{6.5in}}
+  \doublespacing \emph{Notes}: Dots represent the estimated change in the logged odds of self-identifying as a `have-not' for a change of two standard deviations in the independent variable; whiskers represent 90\% confidence intervals corresponding to NJL's one-tailed tests. 
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -713,10 +717,10 @@ rm(t3_inter_inc, t3_inter_gini) # discard naively cached objects
     \includegraphics[width=5.9in]{figures/t3_multi.pdf}
   \end{center}
   \begin{footnotesize}
-  \begin{tabular}{p{.1in} p{6.1in}}
-  & \emph{Notes}: The dots and solid lines represent the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable; whiskers and shaded regions represent 95\% confidence intervals.
+  \begin{tabular}{p{6.5in}}
+  \doublespacing \emph{Notes}: Dots and solid lines represent the estimated change in the logged odds of the dependent variable for a change of two standard deviations in the independent variable; whiskers and shaded regions represent 95\% confidence intervals.
 Income is estimated to have a negative effect on identifying as a have-not that is strong, statistically significant, and larger in magnitude as local income inequality increases.
-There is no support for the conclusion reached in NJL that lower income people are more likely to identify as have-nots when they live in contexts of greater income inequality; there is only support for the proposition that those with higher incomes are less likely to do so where inequality is greater.
+There is no support for the conclusion reached in NJL that lower income people are more likely to identify as have-nots when they live in contexts of greater income inequality.
   \end{tabular}
   \end{footnotesize}
 \end{figure}
@@ -734,10 +738,12 @@ If it were true, advocates for greater redistribution could remain subdued, secu
 The fact that the available evidence provides no support for this claim, on the other hand, suggests that if change is to occur, it will only result from concerted effort, from the difficult and much-constrained work of organization and mobilization.
 Those who favor a more egalitarian society have no grounds for complacency.
 
+\noindent \textbf{Biographical Statement}: Frederick Solt is associate professor, Yue Hu is Ph.D. candidate, Kevan Hudson is M.A. graduate, Jungmin Song is Ph.D. candidate, and Dong `Erico' Yu is Ph.D. candidate, all at the University of Iowa, Iowa City, IA, 52242.
 
-\end{spacing}
+
 
 \bibliographystyle{ajps}
 \bibliography{class_consciousness}
 
+\end{spacing}
 \end{document}
